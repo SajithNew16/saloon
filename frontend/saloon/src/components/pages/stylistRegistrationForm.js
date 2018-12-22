@@ -1,12 +1,27 @@
 import {
-    Form, Input, Tooltip, Icon, Select, Button
+    Form, Input, Tooltip, Icon, Button, Cascader
 } from 'antd';
 import React from 'react';
 
 const FormItem = Form.Item;
-const Option = Select.Option;
+const experiences = [{
+    value: '1 year or less than 1 year',
+    label: '1 year or less than 1 year'
+}, {
+    value: '2 years or less than 2 years',
+    label: '2 years or less than 2 years'
+}, {
+    value: '3 years or less than 3 years',
+    label: '3 years or less than 3 years'
+},
+{
+    value: '4 years or less than 4 years',
+    label: '4 years or less than 4 years'
+}
+];
 
-class RegistrationForm extends React.Component {
+
+class StylistRegistrationForm extends React.Component {
     state = {
         confirmDirty: false,
         autoCompleteResult: [],
@@ -78,17 +93,10 @@ class RegistrationForm extends React.Component {
                 },
             },
         };
-        const prefixSelector = getFieldDecorator('prefix', {
-            initialValue: '86',
-        })(
-            <Select style={{ width: 70 }}>
-                <Option value="86">+86</Option>
-                <Option value="87">+87</Option>
-            </Select>
-        );
 
         return (
             <Form onSubmit={this.handleSubmit}>
+                <h2>Registration For Stylist</h2>
                 <FormItem
                     {...formItemLayout}
                     label={(
@@ -122,6 +130,17 @@ class RegistrationForm extends React.Component {
                 </FormItem>
                 <FormItem
                     {...formItemLayout}
+                    label="Working Experience"
+                >
+                    {getFieldDecorator('experience', {
+                        // initialValue: ['zhejiang', 'hangzhou', 'xihu'],
+                        rules: [{ type: 'array', required: true, message: 'Please select your working experience as a stylist!' }],
+                    })(
+                        <Cascader options={experiences} />
+                    )}
+                </FormItem>
+                <FormItem
+                    {...formItemLayout}
                     label="Password"
                 >
                     {getFieldDecorator('password', {
@@ -148,33 +167,14 @@ class RegistrationForm extends React.Component {
                         <Input type="password" onBlur={this.handleConfirmBlur} />
                     )}
                 </FormItem>
-
-                <FormItem
-                    {...formItemLayout}
-                    label="Working Experience"
-                >
-                    {getFieldDecorator('residence', {
-                        initialValue: ['zhejiang', 'hangzhou', 'xihu'],
-                        rules: [{ type: 'array', required: true, message: 'Please select your years of experiences' }],
-                    })}
-                </FormItem>
-                <FormItem
-                    {...formItemLayout}
-                    label="Phone Number"
-                >
-                    {getFieldDecorator('phone', {
-                        rules: [{ required: true, message: 'Please input your phone number!' }],
-                    })(
-                        <Input addonBefore={prefixSelector} style={{ width: '100%' }} />
-                    )}
-                </FormItem>
                 <FormItem {...tailFormItemLayout}>
-                    <Button type="primary" htmlType="submit">Register</Button>
+                    <Button type="primary" htmlType="submit">Sign Up</Button>
+                    <center>Already have an account? <a href="/">Log In</a></center>
                 </FormItem>
             </Form>
         );
     }
 }
 
-const WrappedRegistrationForm = Form.create()(RegistrationForm);
+const WrappedRegistrationForm = Form.create()(StylistRegistrationForm);
 export default WrappedRegistrationForm;

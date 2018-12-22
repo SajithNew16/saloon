@@ -28,7 +28,7 @@ class Header extends Component {
                                     </button>
                                     <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                         <a className="dropdown-item " href="/stylistForm">Stylist</a>
-                                        <a className="dropdown-item " href="/">Saloon Owner</a>
+                                        <a className="dropdown-item " href="/saloonForm">Saloon Owner</a>
                                     </div>
                                 </div>
                             </li>
