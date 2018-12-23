@@ -8,15 +8,15 @@ const experiences = [{
     value: '1 year or less than 1 year',
     label: '1 year or less than 1 year'
 }, {
-    value: '2 years or less than 2 years',
-    label: '2 years or less than 2 years'
+    value: '2 years or more than 1 years',
+    label: '2 years or more than 1 years'
 }, {
-    value: '3 years or less than 3 years',
-    label: '3 years or less than 3 years'
+    value: '3 years or more than 2 years',
+    label: '3 years or more than 2 years'
 },
 {
-    value: '4 years or less than 4 years',
-    label: '4 years or less than 4 years'
+    value: 'more than 3 years',
+    label: 'more than 3 years'
 }
 ];
 
@@ -31,9 +31,40 @@ class StylistRegistrationForm extends React.Component {
         e.preventDefault();
         this.props.form.validateFieldsAndScroll((err, values) => {
             if (!err) {
+                fetch('http://localhost:3000/api/stylists', {
+                    method: "POST",
+                    body: JSON.stringify(values),
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                }).then(response => {
+                    response.json().then(data => {
+                        console.log("Successful" + data);
+                    })
+                })
                 console.log('Received values of form: ', values);
+                // document.getElementById("create-course-form").reset();
+                this.handleClearForm(values);
+                // e.target.reset();
             }
         });
+    }
+
+    handleClearForm(values) {
+        console.log('executed: ');
+        console.log('Received values of form: ', values);
+
+        // console.log('executed: ');
+        // e.preventDefault();
+        // const userName = this.state.userName;
+        // this.props.onSearchTermChange(userName);
+        values({
+            userName: '',
+            email: '',
+            experience: [],
+            password: ''
+        })
     }
 
     handleConfirmBlur = (e) => {
@@ -95,7 +126,7 @@ class StylistRegistrationForm extends React.Component {
         };
 
         return (
-            <Form onSubmit={this.handleSubmit}>
+            <Form onSubmit={this.handleSubmit.bind(this)} id="reate-course-form">
                 <h2>Registration For Stylist</h2>
                 <FormItem
                     {...formItemLayout}
@@ -133,7 +164,6 @@ class StylistRegistrationForm extends React.Component {
                     label="Working Experience"
                 >
                     {getFieldDecorator('experience', {
-                        // initialValue: ['zhejiang', 'hangzhou', 'xihu'],
                         rules: [{ type: 'array', required: true, message: 'Please select your working experience as a stylist!' }],
                     })(
                         <Cascader options={experiences} />
