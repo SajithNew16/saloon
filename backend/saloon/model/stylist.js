@@ -1,3 +1,4 @@
+var Sequelize = require('sequelize');
 module.exports = (sequelize, type) => {
     return sequelize.define('stylist', {
         id: {
@@ -7,7 +8,19 @@ module.exports = (sequelize, type) => {
         },
         userName: type.STRING,
         password: type.STRING,
-        email: type.STRING,
-        experience: []
+        email: {
+            type: type.STRING,
+            unique: true
+        },
+        experience: {
+            type: Sequelize.STRING,
+            allowNull: false,
+            get() {
+                return this.getDataValue('experience').split(';')
+            },
+            set(val) {
+                this.setDataValue('experience', val.join(';'));
+            },
+        }
     })
 }
