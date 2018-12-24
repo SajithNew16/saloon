@@ -5,6 +5,7 @@ import AboutusPage from './pages/aboutUsPage';
 import StylistRegistrationForm from './pages/stylistRegistrationForm';
 import SaloonOwnerRegistrationForm from './pages/saloonOwnerRegistrationForm';
 import LoginForm from './pages/loginForm';
+import StylistHome from './pages/stylistHomePage';
 
 const Body = () => (
 
@@ -15,6 +16,7 @@ const Body = () => (
             <Route exact path='/stylistForm' component={StylistRegistrationForm} />
             <Route exact path='/saloonForm' component={SaloonOwnerRegistrationForm} />
             <Route exact path='/loginForm' component={LoginForm} />
+            <Route exact path='/stylistHome' component={StylistHome} />
         </Switch>
     </main>
 

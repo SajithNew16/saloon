@@ -2,10 +2,12 @@ import {
     Form, Input, Tooltip, Icon, Button
 } from 'antd';
 import React from 'react';
+import StylistRegistrationForm from './stylistRegistrationForm';
 
 const FormItem = Form.Item;
 
-class StylistHomePage extends React.Component {
+class StylistHomePage extends  StylistRegistrationForm {
+   
     state = {
         confirmDirty: false,
         autoCompleteResult: [],
@@ -79,92 +81,93 @@ class StylistHomePage extends React.Component {
         };
 
         return (
-            <Form onSubmit={this.handleSubmit}>
-                <h2>Registration For Saloon Owner</h2>
-                <FormItem
-                    {...formItemLayout}
-                    label={(
-                        <span>
-                            User Name&nbsp;
-                <Tooltip title="What do you want others to call you?">
-                                <Icon type="question-circle-o" />
-                            </Tooltip>
-                        </span>
-                    )}
-                >
-                    {getFieldDecorator('userName', {
-                        rules: [{ required: true, message: 'Please input your User Name!', whitespace: true }],
-                    })(
-                        <Input />
-                    )}
-                </FormItem>
-                <FormItem
-                    {...formItemLayout}
-                    label="E-mail"
-                >
-                    {getFieldDecorator('email', {
-                        rules: [{
-                            type: 'email', message: 'The input is not valid E-mail!',
-                        }, {
-                            required: true, message: 'Please input your E-mail!',
-                        }],
-                    })(
-                        <Input />
-                    )}
-                </FormItem>
-                <FormItem
-                    {...formItemLayout}
-                    label="Saloon Name"
-                >
-                    {getFieldDecorator('saloonName', {
-                        rules: [{ required: true, message: 'Please input your Saloon Name!', whitespace: true }],
-                    })(
-                        <Input />
-                    )}
-                </FormItem>
-                <FormItem
-                    {...formItemLayout}
-                    label="Location"
-                >
-                    {getFieldDecorator('Saloon Location', {
-                        rules: [{ required: true, message: 'Please input your Saloon Location!', whitespace: true }],
-                    })(
-                        <Input />
-                    )}
-                </FormItem>
-                <FormItem
-                    {...formItemLayout}
-                    label="Password"
-                >
-                    {getFieldDecorator('password', {
-                        rules: [{
-                            required: true, message: 'Please input your password!',
-                        }, {
-                            validator: this.validateToNextPassword,
-                        }],
-                    })(
-                        <Input type="password" />
-                    )}
-                </FormItem>
-                <FormItem
-                    {...formItemLayout}
-                    label="Confirm Password"
-                >
-                    {getFieldDecorator('confirm', {
-                        rules: [{
-                            required: true, message: 'Please confirm your password!',
-                        }, {
-                            validator: this.compareToFirstPassword,
-                        }],
-                    })(
-                        <Input type="password" onBlur={this.handleConfirmBlur} />
-                    )}
-                </FormItem>
-                <FormItem {...tailFormItemLayout}>
-                    <Button type="primary" htmlType="submit">Sign Up</Button>
-                    <center>Already have an account? <a href="/">Log In</a></center>
-                </FormItem>
-            </Form>
+            <h2>Welcome</h2>
+            // <Form onSubmit={this.handleSubmit}>
+            //     <h2>Welcome</h2>
+            //     <FormItem
+            //         {...formItemLayout}
+            //         label={(
+            //             <span>
+            //                 User Name&nbsp;
+            //     <Tooltip title="What do you want others to call you?">
+            //                     <Icon type="question-circle-o" />
+            //                 </Tooltip>
+            //             </span>
+            //         )}
+            //     >
+            //         {getFieldDecorator('userName', {
+            //             rules: [{ required: true, message: 'Please input your User Name!', whitespace: true }],
+            //         })(
+            //             <Input />
+            //         )}
+            //     </FormItem>
+            //     <FormItem
+            //         {...formItemLayout}
+            //         label="E-mail"
+            //     >
+            //         {getFieldDecorator('email', {
+            //             rules: [{
+            //                 type: 'email', message: 'The input is not valid E-mail!',
+            //             }, {
+            //                 required: true, message: 'Please input your E-mail!',
+            //             }],
+            //         })(
+            //             <Input />
+            //         )}
+            //     </FormItem>
+            //     <FormItem
+            //         {...formItemLayout}
+            //         label="Saloon Name"
+            //     >
+            //         {getFieldDecorator('saloonName', {
+            //             rules: [{ required: true, message: 'Please input your Saloon Name!', whitespace: true }],
+            //         })(
+            //             <Input />
+            //         )}
+            //     </FormItem>
+            //     <FormItem
+            //         {...formItemLayout}
+            //         label="Location"
+            //     >
+            //         {getFieldDecorator('Saloon Location', {
+            //             rules: [{ required: true, message: 'Please input your Saloon Location!', whitespace: true }],
+            //         })(
+            //             <Input />
+            //         )}
+            //     </FormItem>
+            //     <FormItem
+            //         {...formItemLayout}
+            //         label="Password"
+            //     >
+            //         {getFieldDecorator('password', {
+            //             rules: [{
+            //                 required: true, message: 'Please input your password!',
+            //             }, {
+            //                 validator: this.validateToNextPassword,
+            //             }],
+            //         })(
+            //             <Input type="password" />
+            //         )}
+            //     </FormItem>
+            //     <FormItem
+            //         {...formItemLayout}
+            //         label="Confirm Password"
+            //     >
+            //         {getFieldDecorator('confirm', {
+            //             rules: [{
+            //                 required: true, message: 'Please confirm your password!',
+            //             }, {
+            //                 validator: this.compareToFirstPassword,
+            //             }],
+            //         })(
+            //             <Input type="password" onBlur={this.handleConfirmBlur} />
+            //         )}
+            //     </FormItem>
+            //     <FormItem {...tailFormItemLayout}>
+            //         <Button type="primary" htmlType="submit">Sign Up</Button>
+            //         <center>Already have an account? <a href="/">Log In</a></center>
+            //     </FormItem>
+            // </Form>
         );
     }
 }

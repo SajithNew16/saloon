@@ -2,6 +2,7 @@ import {
     Form, Input, Tooltip, Icon, Button, Cascader
 } from 'antd';
 import React from 'react';
+import axios from 'axios';
 
 const FormItem = Form.Item;
 const experiences = [{
@@ -22,71 +23,81 @@ const experiences = [{
 
 
 class StylistRegistrationForm extends React.Component {
-    state = {
-        confirmDirty: false,
-        autoCompleteResult: [],
-        userName: '',
-        email: '',
-        experience: [],
-        password: ''
-    };
+
+    constructor() {
+        super();
+        this.state = {
+            confirmDirty: false,
+            autoCompleteResult: [],
+            userName: '',
+            email: '',
+            experience: [],
+            password: ''
+        }
+    }
+
+    // state = {
+    //     confirmDirty: false,
+    //     autoCompleteResult: [],
+    //     userName: '',
+    //     email: '',
+    //     experience: [],
+    //     password: ''
+    // };
 
     handleSubmit = (e) => {
         e.preventDefault();
         this.props.form.validateFieldsAndScroll((err, values) => {
             if (!err) {
-                fetch('http://localhost:3000/api/stylists', {
-                    method: "POST",
-                    body: JSON.stringify(values),
-                    headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json'
-                    },
-                }).then(response => {
-                    response.json().then(data => {
-                        console.log("Successful" + data);
-                    })
-                })
-                console.log('Received values of form: ', values);
+                axios.post('http://localhost:3000/api/stylists', values).then(response => {
+                    // response.json().then(data => {
+                        
+                    // })
+                    console.log("Successful" + response);
+                        if(response.data.success){
+                            console.log(response.data.stylist)
+                        }else{
+                            console.log(response.data.error)
+                        }
+                    
+
+                }).catch(err => { console.error('Err', err) })
+                // console.log('Received values of form: ', values);
                 // document.getElementById("create-course-form").reset();
-                this.handleClearForm(values);
-                // e.target.reset();
+                this.handleClearForm();
+
+
+                // var retVal = window.confirm("Successfully registered! Do you want to continue?");
+                // if (retVal === true) {
+                //     window.location.href = "http://localhost:3001/stylistHome";
+                //     return true;
+                // }
+                // else {
+                //     return false;
+                // }
+
             }
         });
     }
 
-    handleClearForm(values) {
+
+    handleClearForm() {
         console.log('executed: ');
-        console.log('Received values of form: ', values);
+
 
         // console.log('executed: ');
         // e.preventDefault();
         // const userName = this.state.userName;
         // this.props.onSearchTermChange(userName);
         this.setState({
+            confirmDirty: false,
+            autoCompleteResult: [],
             userName: '',
             email: '',
             experience: [],
             password: ''
         })
 
-        // $.ajax({
-        //     type: "GET",
-        //     url: "http://localhost:3001/stylistForm/aboutus",
-
-        //     dataType: "json",
-        //     success: function (data, textStatus) {
-        //         window.location.href = url;
-        //         // if (data.redirect) {
-        //         //     // data.redirect contains the string URL to redirect to
-        //         //     window.location.href = url;
-        //         // }
-        //         // else {
-        //         //     // data.form contains the HTML for the replacement form
-        //         //     $("#myform").replaceWith(data.form);
-        //         // }
-        //     }
-        // });
     }
 
     handleConfirmBlur = (e) => {
@@ -148,7 +159,7 @@ class StylistRegistrationForm extends React.Component {
         };
 
         return (
-            <Form onSubmit={this.handleSubmit.bind(this)} id="reate-course-form">
+            <Form onSubmit={this.handleSubmit} id="reate-course-form">
                 <h2>Registration For Stylist</h2>
                 <FormItem
                     {...formItemLayout}

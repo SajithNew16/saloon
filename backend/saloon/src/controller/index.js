@@ -8,16 +8,32 @@ const app = express();
 app.use(cors());
 app.use(bodyparser.json());
 
+// create a stylist
 app.post('/api/stylists', async (req, res) => {
     try {
         console.log(req.body);
         const stylist = await Stylist.create(req.body);
-        res.json(stylist);
+        res.json({
+            success : true,
+            stylist: stylist
+        });
     } catch (error) {
-        res.json(error);
+        res.json({
+            success: false,
+            error: error.errors[0].message
+        });
         console.log("Error: " + error);
     }
 });
+
+//authenticate the stylist 
+app.get('/api/stylists/id?', (req, res) => {
+        Stylist.count({ where: { 'id': req.param.id } }).then(c => {
+            res.json(req.param.id);
+            console.log("There are " + c + " projects with an id greater than 25.");
+        })
+        // Stylist.findAll().then(users => res.json(users))
+    });
 
 // // create a stylist
 // app.post('/api/stylists', (req, res) => {
