@@ -54,7 +54,7 @@ class LoginForm extends React.Component {
         </Form.Item>
         <Form.Item>
           <a className="login-form-forgot" href="/">Forgot password </a>
-          Or <a href="/">register now!</a>
+          Or register <a href="/stylistForm"> stylist </a>/ <a href="/saloonForm"> saloon owner </a>now!
         </Form.Item>
       </Form>
     );

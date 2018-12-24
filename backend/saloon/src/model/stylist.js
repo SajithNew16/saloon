@@ -13,8 +13,7 @@ module.exports = (sequelize, type) => {
             unique: true
         },
         experience: {
-            type: Sequelize.STRING,
-            allowNull: false,
+            type: Sequelize.STRING,          
             get() {
                 return this.getDataValue('experience').split(';')
             },

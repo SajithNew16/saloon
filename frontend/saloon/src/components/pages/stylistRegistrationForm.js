@@ -221,7 +221,7 @@ class StylistRegistrationForm extends React.Component {
                 </FormItem>
                 <FormItem {...tailFormItemLayout}>
                     <Button type="primary" htmlType="submit">Sign Up</Button>
-                    <center>Already have an account? <a href="/">Log In</a></center>
+                    <center>Already have an account? <a href="/loginForm">Log In</a></center>
                 </FormItem>
             </Form>
         );

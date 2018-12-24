@@ -62,7 +62,7 @@ class SaloonOwnerRegistrationForm extends React.Component {
             },
             wrapperCol: {
                 xs: { span: 24 },
-                sm: { span: 16 },
+                sm: { span: 14 },
             },
         };
         const tailFormItemLayout = {
@@ -162,7 +162,7 @@ class SaloonOwnerRegistrationForm extends React.Component {
                 </FormItem>
                 <FormItem {...tailFormItemLayout}>
                     <Button type="primary" htmlType="submit">Sign Up</Button>
-                    <center>Already have an account? <a href="/">Log In</a></center>
+                    <center>Already have an account? <a href="/loginForm">Log In</a></center>
                 </FormItem>
             </Form>
         );
