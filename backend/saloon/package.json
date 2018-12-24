@@ -2,7 +2,7 @@
   "name": "saloon",
   "version": "1.0.0",
   "description": "",
-  "main": "controller/index.js",
+  "main": "src/controller/index.js",
   "scripts": {
     "test": "mocha",
     "serve": "nodemon server.js"

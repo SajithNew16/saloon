@@ -1,92 +1,23 @@
 import {
-    Form, Input, Tooltip, Icon, Button, Cascader
+    Form, Input, Tooltip, Icon, Button
 } from 'antd';
 import React from 'react';
 
 const FormItem = Form.Item;
-const experiences = [{
-    value: '1 year or less than 1 year',
-    label: '1 year or less than 1 year'
-}, {
-    value: '2 years or more than 1 year',
-    label: '2 years or more than 1 year'
-}, {
-    value: '3 years or more than 2 years',
-    label: '3 years or more than 2 years'
-},
-{
-    value: 'more than 3 years',
-    label: 'more than 3 years'
-}
-];
 
-
-class StylistRegistrationForm extends React.Component {
+class StylistHomePage extends React.Component {
     state = {
         confirmDirty: false,
         autoCompleteResult: [],
-        userName: '',
-        email: '',
-        experience: [],
-        password: ''
     };
 
     handleSubmit = (e) => {
         e.preventDefault();
         this.props.form.validateFieldsAndScroll((err, values) => {
             if (!err) {
-                fetch('http://localhost:3000/api/stylists', {
-                    method: "POST",
-                    body: JSON.stringify(values),
-                    headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json'
-                    },
-                }).then(response => {
-                    response.json().then(data => {
-                        console.log("Successful" + data);
-                    })
-                })
                 console.log('Received values of form: ', values);
-                // document.getElementById("create-course-form").reset();
-                this.handleClearForm(values);
-                // e.target.reset();
             }
         });
-    }
-
-    handleClearForm(values) {
-        console.log('executed: ');
-        console.log('Received values of form: ', values);
-
-        // console.log('executed: ');
-        // e.preventDefault();
-        // const userName = this.state.userName;
-        // this.props.onSearchTermChange(userName);
-        this.setState({
-            userName: '',
-            email: '',
-            experience: [],
-            password: ''
-        })
-
-        // $.ajax({
-        //     type: "GET",
-        //     url: "http://localhost:3001/stylistForm/aboutus",
-
-        //     dataType: "json",
-        //     success: function (data, textStatus) {
-        //         window.location.href = url;
-        //         // if (data.redirect) {
-        //         //     // data.redirect contains the string URL to redirect to
-        //         //     window.location.href = url;
-        //         // }
-        //         // else {
-        //         //     // data.form contains the HTML for the replacement form
-        //         //     $("#myform").replaceWith(data.form);
-        //         // }
-        //     }
-        // });
     }
 
     handleConfirmBlur = (e) => {
@@ -131,7 +62,7 @@ class StylistRegistrationForm extends React.Component {
             },
             wrapperCol: {
                 xs: { span: 24 },
-                sm: { span: 14 },
+                sm: { span: 16 },
             },
         };
         const tailFormItemLayout = {
@@ -148,8 +79,8 @@ class StylistRegistrationForm extends React.Component {
         };
 
         return (
-            <Form onSubmit={this.handleSubmit.bind(this)} id="reate-course-form">
-                <h2>Registration For Stylist</h2>
+            <Form onSubmit={this.handleSubmit}>
+                <h2>Registration For Saloon Owner</h2>
                 <FormItem
                     {...formItemLayout}
                     label={(
@@ -183,12 +114,22 @@ class StylistRegistrationForm extends React.Component {
                 </FormItem>
                 <FormItem
                     {...formItemLayout}
-                    label="Working Experience"
+                    label="Saloon Name"
                 >
-                    {getFieldDecorator('experience', {
-                        rules: [{ type: 'array', required: true, message: 'Please select your working experience as a stylist!' }],
+                    {getFieldDecorator('saloonName', {
+                        rules: [{ required: true, message: 'Please input your Saloon Name!', whitespace: true }],
                     })(
-                        <Cascader options={experiences} />
+                        <Input />
+                    )}
+                </FormItem>
+                <FormItem
+                    {...formItemLayout}
+                    label="Location"
+                >
+                    {getFieldDecorator('Saloon Location', {
+                        rules: [{ required: true, message: 'Please input your Saloon Location!', whitespace: true }],
+                    })(
+                        <Input />
                     )}
                 </FormItem>
                 <FormItem
@@ -228,5 +169,5 @@ class StylistRegistrationForm extends React.Component {
     }
 }
 
-const WrappedRegistrationForm = Form.create()(StylistRegistrationForm);
-export default WrappedRegistrationForm;
+const WrappedStylistHome = Form.create()(StylistHomePage);
+export default WrappedStylistHome;
