@@ -24,8 +24,8 @@ const experiences = [{
 
 class StylistRegistrationForm extends React.Component {
 
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         this.state = {
             confirmDirty: false,
             autoCompleteResult: [],
@@ -34,6 +34,7 @@ class StylistRegistrationForm extends React.Component {
             experience: [],
             password: ''
         }
+        this.handleSubmit = this.handleSubmit.bind(this);
     }
 
     // state = {
@@ -50,45 +51,32 @@ class StylistRegistrationForm extends React.Component {
         this.props.form.validateFieldsAndScroll((err, values) => {
             if (!err) {
                 axios.post('http://localhost:3000/api/stylists', values).then(response => {
-                    // response.json().then(data => {
-                        
-                    // })
                     console.log("Successful" + response);
-                        if(response.data.success){
-                            console.log(response.data.stylist)
-                        }else{
-                            console.log(response.data.error)
+                    if (response.data.success) {
+                        var retVal = window.confirm("Successfully registered! Do you want to continue?");
+                        this.handleClearForm();
+                        if (retVal === true) {
+                            window.location.href = "http://localhost:3001/stylistHome";
+                            return true;
                         }
-                    
-
-                }).catch(err => { console.error('Err', err) })
-                // console.log('Received values of form: ', values);
-                // document.getElementById("create-course-form").reset();
-                this.handleClearForm();
-
-
-                // var retVal = window.confirm("Successfully registered! Do you want to continue?");
-                // if (retVal === true) {
-                //     window.location.href = "http://localhost:3001/stylistHome";
-                //     return true;
-                // }
-                // else {
-                //     return false;
-                // }
-
+                        else {
+                            return false;
+                        }
+                        
+                        // this.handleClearForm();
+                        // console.log(response.data.stylist)
+                    } else {
+                        alert("Email has already existing! So you should have an account in Comcast. If you have any queries please post it on our contact us page");
+                        console.log(response.data.error)
+                    }
+                })
+                
             }
         });
     }
 
-
     handleClearForm() {
         console.log('executed: ');
-
-
-        // console.log('executed: ');
-        // e.preventDefault();
-        // const userName = this.state.userName;
-        // this.props.onSearchTermChange(userName);
         this.setState({
             confirmDirty: false,
             autoCompleteResult: [],
@@ -97,7 +85,6 @@ class StylistRegistrationForm extends React.Component {
             experience: [],
             password: ''
         })
-
     }
 
     handleConfirmBlur = (e) => {

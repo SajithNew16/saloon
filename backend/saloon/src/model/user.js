@@ -1,4 +1,5 @@
 const bcrypt = require('bcrypt-nodejs');
+SALT_WORK_FACTOR = 12;
 
 module.exports = (sequelize, type) => {
     var User = sequelize.define('User', {
@@ -38,6 +39,8 @@ module.exports = (sequelize, type) => {
         bcrypt.hash(user.password, salt, nulll, function (err, hash) {
             if (err)
                 return next(err);
+            user.password = hash;
+            return fn(null, user)
         })
     })
 
