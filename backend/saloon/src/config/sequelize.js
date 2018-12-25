@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize');
 const StylistModel = require('../model/stylist');
 
-const sequelize = new Sequelize('saloon', 'root', '', {
+const sequelize = new Sequelize('saloon', 'root', 'root', {
     host: 'localhost',
     dialect: 'mysql',
     pool: {

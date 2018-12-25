@@ -3,6 +3,7 @@ import {
 } from 'antd';
 import React from 'react';
 import axios from 'axios';
+import $ from 'jquery';
 
 const FormItem = Form.Item;
 const experiences = [{
@@ -24,27 +25,14 @@ const experiences = [{
 
 class StylistRegistrationForm extends React.Component {
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            confirmDirty: false,
-            autoCompleteResult: [],
-            userName: '',
-            email: '',
-            experience: [],
-            password: ''
-        }
-        this.handleSubmit = this.handleSubmit.bind(this);
-    }
-
-    // state = {
-    //     confirmDirty: false,
-    //     autoCompleteResult: [],
-    //     userName: '',
-    //     email: '',
-    //     experience: [],
-    //     password: ''
-    // };
+    state = {
+        confirmDirty: false,
+        autoCompleteResult: [],
+        userName: '',
+        email: '',
+        experience: [],
+        password: ''
+    };
 
     handleSubmit = (e) => {
         e.preventDefault();
@@ -53,8 +41,8 @@ class StylistRegistrationForm extends React.Component {
                 axios.post('http://localhost:3000/api/stylists', values).then(response => {
                     console.log("Successful" + response);
                     if (response.data.success) {
+                        $('#clearButton').trigger("click");
                         var retVal = window.confirm("Successfully registered! Do you want to continue?");
-                        this.handleClearForm();
                         if (retVal === true) {
                             window.location.href = "http://localhost:3001/stylistHome";
                             return true;
@@ -62,29 +50,17 @@ class StylistRegistrationForm extends React.Component {
                         else {
                             return false;
                         }
-                        
-                        // this.handleClearForm();
-                        // console.log(response.data.stylist)
                     } else {
                         alert("Email has already existing! So you should have an account in Comcast. If you have any queries please post it on our contact us page");
                         console.log(response.data.error)
                     }
                 })
-                
             }
         });
     }
 
-    handleClearForm() {
-        console.log('executed: ');
-        this.setState({
-            confirmDirty: false,
-            autoCompleteResult: [],
-            userName: '',
-            email: '',
-            experience: [],
-            password: ''
-        })
+    handleClearForm = (e) => {
+        this.props.form.resetFields();
     }
 
     handleConfirmBlur = (e) => {
@@ -146,7 +122,7 @@ class StylistRegistrationForm extends React.Component {
         };
 
         return (
-            <Form onSubmit={this.handleSubmit} id="reate-course-form">
+            <Form onSubmit={this.handleSubmit}>
                 <h2>Registration For Stylist</h2>
                 <FormItem
                     {...formItemLayout}
@@ -221,6 +197,11 @@ class StylistRegistrationForm extends React.Component {
                     <Button type="primary" htmlType="submit">Sign Up</Button>
                     <center>Already have an account? <a href="/loginForm">Log In</a></center>
                 </FormItem>
+                <Form.Item {...tailFormItemLayout}>
+                    <Button id="clearButton" hidden onClick={e => {
+                        this.props.form.resetFields()
+                    }} >Clear</Button>
+                </Form.Item>
             </Form>
         );
     }
