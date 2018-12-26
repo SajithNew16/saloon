@@ -2,7 +2,7 @@
 const express = require("express");
 const bodyparser = require("body-parser");
 const cors = require('cors');
-const { Stylist } = require('../config/sequelize');
+const { Stylist, Saloon } = require('../config/sequelize');
 
 const app = express();
 app.use(cors());
@@ -14,7 +14,7 @@ app.post('/api/stylists', async (req, res) => {
         console.log(req.body);
         const stylist = await Stylist.create(req.body);
         res.json({
-            success : true,
+            success: true,
             stylist: stylist
         });
     } catch (error) {
@@ -26,55 +26,63 @@ app.post('/api/stylists', async (req, res) => {
     }
 });
 
-//authenticate the stylist 
-app.get('/api/stylists/id?', (req, res) => {
-        Stylist.count({ where: { 'id': req.param.id } }).then(c => {
-            res.json(req.param.id);
-            console.log("There are " + c + " projects with an id greater than 25.");
-        })
-        // Stylist.findAll().then(users => res.json(users))
-    });
+// create a saloon owner
+app.post('/api/saloon', async (req, res) => {
+    try {
+        const saloon = await Saloon.create(req.body);
+        res.json({
+            success: true,
+            saloon: saloon
+        });
+    } catch (error) {
+        res.json({
+            success: false,
+            error: error.errors[0].message
+        });
+        console.log("Error: " + error);
+    }
+});
 
-// // create a stylist
-// app.post('/api/stylists', (req, res) => {
-//     console.log(req.body);
-//     Stylist.create(req.body)
-//         .then(stylist => res.json(stylist))
-//         .catch(err => console.log(err))
+app.post('/api/login', async (req, res) => {
+    try {
+        const saloon = await Saloon.findAll({
+            where: {
+                email: req.body.email,
+                password: req.body.password
+            }
+        });
+        res.json({
+            // success: true,
+            // result: saloon[0].id,
+            saloon: saloon
+        });
+    } catch (error) {
+        res.json({
+            // success: false,
+            // result: saloon[0].id,
+            saloon: saloon,
+            error: error.errors[0].message
+        });
+    }
+});
+
+//get the id of the saloon owner
+// app.post('/api/login', (req, res) => {
+//     Saloon.findAll({
+//         where: {
+//             email: req.body.email,
+//             password: req.body.password
+//         }
+//     }).then(
+//         Saloon => res.json(Saloon)
+//     )
 // });
 
-// create a stylist
-// app.post('/api/stylists', (req, res) => {
-//     try {
-//         console.log(req.body);
-//         Stylist.create(req.body)
-//             .then(stylist => res.json(stylist));
-//     } catch (error) {
-//         console.log("There are ");
-//     }
-// });
 
-// // return true or false to validate existing stylist
-// app.get('/api/stylists/isUnique:id?', (req, res) => {
-//     Stylist.count({ 'id': req.param.id }).then(c => {
-//         res.json(req.param.id);
-//         console.log("There are " + c + " projects with an id greater than 25.");
-//     })
-//     // Stylist.findAll().then(users => res.json(users))
-// });
-
-// // return true or false to validate existing stylist
-// app.get('/api/stylists/isUnique:id?', (req, res) => {
-//     Stylist.count({ where: { 'id': req.param.id } }).then(c => {
-//         res.json(req.param.id);
-//         console.log("There are " + c + " projects with an id greater than 25.");
-//     })
-//     // Stylist.findAll().then(users => res.json(users))
-// });
-
-// get all users
-app.get('/api/stylists', (req, res) => {
-    Stylist.findAll().then(stylists => res.json(stylists))
+// get all saloon owners
+app.get('/api/saloon', (req, res) => {
+    // console.log("hi " + req.params.password);
+    Saloon.findAll().then(Saloon => res.json(Saloon))
 })
 
 

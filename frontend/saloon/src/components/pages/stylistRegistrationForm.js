@@ -209,7 +209,7 @@ class StylistRegistrationForm extends React.Component {
                         initialValue: "stylist",
                         rules: [{ whitespace: true }],
                     })(
-                        <Input hidden setfieldsvalue="stylist" />
+                        <Input hidden />
                     )}
                 </FormItem>
             </Form>

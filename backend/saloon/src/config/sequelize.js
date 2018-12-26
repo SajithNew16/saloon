@@ -1,5 +1,6 @@
 const Sequelize = require('sequelize');
 const StylistModel = require('../model/stylist');
+const SaloonModel = require('../model/saloon');
 
 const sequelize = new Sequelize('saloon', 'root', 'root', {
     host: 'localhost',
@@ -13,9 +14,11 @@ const sequelize = new Sequelize('saloon', 'root', 'root', {
 });
 
 const Stylist = StylistModel(sequelize, Sequelize);
+const Saloon = SaloonModel(sequelize, Sequelize);
 
 sequelize.sync({ force: false });
 
 module.exports = {
-    Stylist
+    Stylist,
+    Saloon
 }

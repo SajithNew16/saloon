@@ -2,13 +2,24 @@ import {
   Form, Icon, Input, Button
 } from 'antd';
 import React from 'react';
+import axios from 'axios';
+import $ from 'jquery';
 
 class LoginForm extends React.Component {
   handleSubmit = (e) => {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        console.log('Received values of form: ', values);
+        axios.post('http://localhost:3000/api/login', values).then(response => {
+          console.log("Successful?: " + response.data.saloon);
+          // if (response.data.success) {
+          //   $('#clearButton').trigger("click");
+
+          // } else {
+          //   alert("Email has already existing! So you should have an account in Comcast. If you have any queries please post it on our contact us page");
+          //   console.log(response.data.error)
+          // }
+        })
       }
     });
   }
@@ -24,6 +35,19 @@ class LoginForm extends React.Component {
       wrapperCol: {
         xs: { span: 24 },
         sm: { span: 10 },
+      },
+    };
+
+    const tailFormItemLayout = {
+      wrapperCol: {
+        xs: {
+          span: 24,
+          offset: 0,
+        },
+        sm: {
+          span: 16,
+          offset: 8,
+        },
       },
     };
 
@@ -55,6 +79,11 @@ class LoginForm extends React.Component {
         <Form.Item>
           <a className="login-form-forgot" href="/">Forgot password </a>
           Or register <a href="/stylistForm"> stylist </a>/ <a href="/saloonForm"> saloon owner </a>now!
+        </Form.Item>
+        <Form.Item {...tailFormItemLayout}>
+          <Button id="clearButton" hidden onClick={e => {
+            this.props.form.resetFields()
+          }} >Clear</Button>
         </Form.Item>
       </Form>
     );

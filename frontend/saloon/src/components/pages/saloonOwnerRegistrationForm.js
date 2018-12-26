@@ -2,6 +2,8 @@ import {
     Form, Input, Tooltip, Icon, Button
 } from 'antd';
 import React from 'react';
+import axios from 'axios';
+import $ from 'jquery';
 
 const FormItem = Form.Item;
 
@@ -15,7 +17,23 @@ class SaloonOwnerRegistrationForm extends React.Component {
         e.preventDefault();
         this.props.form.validateFieldsAndScroll((err, values) => {
             if (!err) {
-                console.log('Received values of form: ', values);
+                axios.post('http://localhost:3000/api/saloon', values).then(response => {
+                    console.log("Successful" + response);
+                    if (response.data.success) {
+                        $('#clearButton').trigger("click");
+                        var retVal = window.confirm("Successfully registered! Do you want to continue?");
+                        if (retVal === true) {
+                            window.location.href = "http://localhost:3001/saloonHome";
+                            return true;
+                        }
+                        else {
+                            return false;
+                        }
+                    } else {
+                        alert("Email has already existing! So you should have an account in Comcast. If you have any queries please post it on our contact us page");
+                        console.log(response.data.error)
+                    }
+                })
             }
         });
     }
@@ -126,7 +144,7 @@ class SaloonOwnerRegistrationForm extends React.Component {
                     {...formItemLayout}
                     label="Location"
                 >
-                    {getFieldDecorator('Saloon Location', {
+                    {getFieldDecorator('location', {
                         rules: [{ required: true, message: 'Please input your Saloon Location!', whitespace: true }],
                     })(
                         <Input />
@@ -163,6 +181,20 @@ class SaloonOwnerRegistrationForm extends React.Component {
                 <FormItem {...tailFormItemLayout}>
                     <Button type="primary" htmlType="submit">Sign Up</Button>
                     <center>Already have an account? <a href="/loginForm">Log In</a></center>
+                </FormItem>
+                <Form.Item {...tailFormItemLayout}>
+                    <Button id="clearButton" hidden onClick={e => {
+                        this.props.form.resetFields()
+                    }} >Clear</Button>
+                </Form.Item>
+                <FormItem
+                >
+                    {getFieldDecorator('type', {
+                        initialValue: "saloon",
+                        rules: [{ whitespace: true }],
+                    })(
+                        <Input hidden />
+                    )}
                 </FormItem>
             </Form>
         );

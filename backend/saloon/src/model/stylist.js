@@ -13,7 +13,7 @@ module.exports = (sequelize, type) => {
             unique: true
         },
         experience: {
-            type: Sequelize.STRING,          
+            type: Sequelize.STRING,
             get() {
                 return this.getDataValue('experience').split(';')
             },
@@ -21,7 +21,7 @@ module.exports = (sequelize, type) => {
                 this.setDataValue('experience', val.join(';'));
             },
         },
-        type: type.STRING,
+        type: type.STRING
     })
 }
 
