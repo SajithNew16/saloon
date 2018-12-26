@@ -6,8 +6,8 @@ import StylistRegistrationForm from './stylistRegistrationForm';
 
 const FormItem = Form.Item;
 
-class StylistHomePage extends  StylistRegistrationForm {
-   
+class StylistHomePage extends React.Component {
+
     state = {
         confirmDirty: false,
         autoCompleteResult: [],
@@ -81,7 +81,7 @@ class StylistHomePage extends  StylistRegistrationForm {
         };
 
         return (
-            <h2>Welcome</h2>
+            <h2>Welcome{this.props.state}</h2>
             // <Form onSubmit={this.handleSubmit}>
             //     <h2>Welcome</h2>
             //     <FormItem

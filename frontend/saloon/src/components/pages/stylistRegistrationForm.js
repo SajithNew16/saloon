@@ -25,15 +25,19 @@ const experiences = [{
 
 class StylistRegistrationForm extends React.Component {
 
-    state = {
-        confirmDirty: false,
-        autoCompleteResult: [],
-        userName: '',
-        email: '',
-        experience: [],
-        password: '',
-        type: ''
-    };
+    constructor(props) {
+        super(props);
+        this.state = {
+            confirmDirty: false,
+            autoCompleteResult: [],
+            userName: '',
+            email: '',
+            experience: [],
+            password: '',
+            type: ''
+        };
+    }
+
 
     handleSubmit = (e) => {
         e.preventDefault();

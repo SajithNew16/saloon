@@ -7,6 +7,7 @@ import SaloonOwnerRegistrationForm from './pages/saloonOwnerRegistrationForm';
 import LoginForm from './pages/loginForm';
 import StylistHome from './pages/stylistHomePage';
 import SaloonHome from './pages/SaloonHomePage';
+import ContactUs from './pages/contactUsPage';
 
 const Body = () => (
 
@@ -19,6 +20,7 @@ const Body = () => (
             <Route exact path='/loginForm' component={LoginForm} />
             <Route exact path='/stylistHome' component={StylistHome} />
             <Route exact path='/saloonHome' component={SaloonHome} />
+            <Route exact path='/contactUs' component={ContactUs} />
         </Switch>
     </main>
 

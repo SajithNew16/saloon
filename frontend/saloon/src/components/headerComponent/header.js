@@ -19,7 +19,7 @@ class Header extends Component {
                                 <a className="nav-link" href="/aboutus"><span><b>About Us</b></span></a>
                             </li>
                             <li className="nav-item">
-                                <a className="nav-link" href="/"><b>Contact Us</b></a>
+                                <a className="nav-link" href="/contactUs"><b>Contact Us</b></a>
                             </li>
                             <li className="nav-item">
                                 <div className="dropdown">
