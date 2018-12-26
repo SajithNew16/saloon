@@ -31,7 +31,8 @@ class StylistRegistrationForm extends React.Component {
         userName: '',
         email: '',
         experience: [],
-        password: ''
+        password: '',
+        type: ''
     };
 
     handleSubmit = (e) => {
@@ -202,6 +203,15 @@ class StylistRegistrationForm extends React.Component {
                         this.props.form.resetFields()
                     }} >Clear</Button>
                 </Form.Item>
+                <FormItem
+                >
+                    {getFieldDecorator('type', {
+                        initialValue: "stylist",
+                        rules: [{ whitespace: true }],
+                    })(
+                        <Input hidden setfieldsvalue="stylist" />
+                    )}
+                </FormItem>
             </Form>
         );
     }

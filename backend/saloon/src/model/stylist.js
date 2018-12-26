@@ -20,7 +20,8 @@ module.exports = (sequelize, type) => {
             set(val) {
                 this.setDataValue('experience', val.join(';'));
             },
-        }
+        },
+        type: type.STRING,
     })
 }
 
