@@ -1,8 +1,8 @@
 import {
-    Form, Input, Tooltip, Icon, Button
+    Form, Card, Col, Row
 } from 'antd';
 import React from 'react';
-import StylistRegistrationForm from './stylistRegistrationForm';
+import { NavLink } from 'react-router-dom';
 
 const FormItem = Form.Item;
 
@@ -86,93 +86,20 @@ class StylistHomePage extends React.Component {
         };
 
         return (
-            <h2>Welcome {this.state.data}</h2>
-            // <Form onSubmit={this.handleSubmit}>
-            //     <h2>Welcome</h2>
-            //     <FormItem
-            //         {...formItemLayout}
-            //         label={(
-            //             <span>
-            //                 User Name&nbsp;
-            //     <Tooltip title="What do you want others to call you?">
-            //                     <Icon type="question-circle-o" />
-            //                 </Tooltip>
-            //             </span>
-            //         )}
-            //     >
-            //         {getFieldDecorator('userName', {
-            //             rules: [{ required: true, message: 'Please input your User Name!', whitespace: true }],
-            //         })(
-            //             <Input />
-            //         )}
-            //     </FormItem>
-            //     <FormItem
-            //         {...formItemLayout}
-            //         label="E-mail"
-            //     >
-            //         {getFieldDecorator('email', {
-            //             rules: [{
-            //                 type: 'email', message: 'The input is not valid E-mail!',
-            //             }, {
-            //                 required: true, message: 'Please input your E-mail!',
-            //             }],
-            //         })(
-            //             <Input />
-            //         )}
-            //     </FormItem>
-            //     <FormItem
-            //         {...formItemLayout}
-            //         label="Saloon Name"
-            //     >
-            //         {getFieldDecorator('saloonName', {
-            //             rules: [{ required: true, message: 'Please input your Saloon Name!', whitespace: true }],
-            //         })(
-            //             <Input />
-            //         )}
-            //     </FormItem>
-            //     <FormItem
-            //         {...formItemLayout}
-            //         label="Location"
-            //     >
-            //         {getFieldDecorator('Saloon Location', {
-            //             rules: [{ required: true, message: 'Please input your Saloon Location!', whitespace: true }],
-            //         })(
-            //             <Input />
-            //         )}
-            //     </FormItem>
-            //     <FormItem
-            //         {...formItemLayout}
-            //         label="Password"
-            //     >
-            //         {getFieldDecorator('password', {
-            //             rules: [{
-            //                 required: true, message: 'Please input your password!',
-            //             }, {
-            //                 validator: this.validateToNextPassword,
-            //             }],
-            //         })(
-            //             <Input type="password" />
-            //         )}
-            //     </FormItem>
-            //     <FormItem
-            //         {...formItemLayout}
-            //         label="Confirm Password"
-            //     >
-            //         {getFieldDecorator('confirm', {
-            //             rules: [{
-            //                 required: true, message: 'Please confirm your password!',
-            //             }, {
-            //                 validator: this.compareToFirstPassword,
-            //             }],
-            //         })(
-            //             <Input type="password" onBlur={this.handleConfirmBlur} />
-            //         )}
-            //     </FormItem>
-            //     <FormItem {...tailFormItemLayout}>
-            //         <Button type="primary" htmlType="submit">Sign Up</Button>
-            //         <center>Already have an account? <a href="/">Log In</a></center>
-            //     </FormItem>
-            // </Form>
+            <div style={{ background: '#ECECEC', padding: '30px' }}>
+                <h2>Welcome {this.state.data}</h2>
+                <Row gutter={16}>
+                    <Col span={8}>
+                        <Card title="Your Profile" bordered={false}>Card content</Card>
+                    </Col>
+                    <Col span={8}>
+                        <Card title="Notifications" bordered={false}>Card content</Card>
+                    </Col>
+                    <Col span={8}>
+                        <Card title="Event Calendar" bordered={false}><NavLink to="/eventForm">Enter your new events</NavLink></Card>
+                    </Col>
+                </Row>
+            </div>
         );
     }
 }

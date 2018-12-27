@@ -4,22 +4,31 @@ import {
 import React from 'react';
 import axios from 'axios';
 import $ from 'jquery';
+import { Link } from 'react-router-dom';
 
 class LoginForm extends React.Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      email: '',
+      password: ''
+    };
+  }
+
   handleSubmit = (e) => {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
-      
+
       if (!err) {
         axios.post('http://localhost:3000/api/login', values).then(response => {
-          console.log("Successful?: " + response.data.saloon);
-          // if (response.data.success) {
-          //   $('#clearButton').trigger("click");
-
-          // } else {
-          //   alert("Email has already existing! So you should have an account in Comcast. If you have any queries please post it on our contact us page");
-          //   console.log(response.data.error)
-          // }
+          if (response.data.saloon != null) {
+            
+            $('#clearButton').trigger("click");
+          }
+          else {
+            alert('Your Email or Password is incorrect.');
+          }
         })
       }
     });
@@ -78,13 +87,15 @@ class LoginForm extends React.Component {
             </Button>
         </Form.Item>
         <Form.Item>
-          <a className="login-form-forgot" href="/">Forgot password </a>
-          Or register <a href="/stylistForm"> stylist </a>/ <a href="/saloonForm"> saloon owner </a>now!
+          <Link to="/">Forgot password </Link>
+          Or register <Link to="/stylistForm"> stylist </Link>/ <Link to="/saloonForm"> saloon owner </Link>now!
         </Form.Item>
         <Form.Item {...tailFormItemLayout}>
-          <Button id="clearButton" hidden onClick={e => {
-            this.props.form.resetFields()
-          }} >Clear</Button>
+          <Link to={{ pathname: "/stylistHome", data: this.state.email }}>
+            <Button id="clearButton" hidden type="primary" onClick={e => {
+              this.props.form.resetFields();
+            }}>Next page</Button>
+          </Link>
         </Form.Item>
       </Form>
     );

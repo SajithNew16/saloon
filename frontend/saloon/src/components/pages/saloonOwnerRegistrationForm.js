@@ -3,6 +3,7 @@ import {
 } from 'antd';
 import React from 'react';
 import axios from 'axios';
+import { NavLink } from 'react-router-dom';
 import $ from 'jquery';
 
 const FormItem = Form.Item;
@@ -180,7 +181,7 @@ class SaloonOwnerRegistrationForm extends React.Component {
                 </FormItem>
                 <FormItem {...tailFormItemLayout}>
                     <Button type="primary" htmlType="submit">Sign Up</Button>
-                    <center>Already have an account? <a href="/loginForm">Log In</a></center>
+                    <center>Already have an account? <NavLink to="/loginForm">Log In</NavLink></center>
                 </FormItem>
                 <Form.Item {...tailFormItemLayout}>
                     <Button id="clearButton" hidden onClick={e => {

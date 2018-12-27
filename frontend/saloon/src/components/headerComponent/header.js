@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { withRouter, NavLink } from 'react-router-dom';
+import { withRouter, NavLink, Link } from 'react-router-dom';
 import saloonImg from './saloon.PNG';
 
 class Header extends Component {
@@ -42,8 +42,8 @@ class Header extends Component {
                                         <b>Sign Up</b>
                                     </button>
                                     <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                        <NavLink className="dropdown-item " to="/stylistForm">Stylist</NavLink>
-                                        <NavLink className="dropdown-item " to="/saloonForm">Saloon Owner</NavLink>
+                                        <Link className="dropdown-item " to="/stylistForm">Stylist</Link>
+                                        <Link className="dropdown-item " to="/saloonForm">Saloon Owner</Link>
                                     </div>
                                 </div>
                             </li>

@@ -201,7 +201,7 @@ class StylistRegistrationForm extends React.Component {
                 </FormItem>
                 <FormItem {...tailFormItemLayout}>
                     <Button type="primary" htmlType="submit">Sign Up</Button>
-                    <center>Already have an account? <a href="/loginForm">Log In</a></center>
+                    <center>Already have an account? <Link to="/loginForm">Log In</Link></center>
                 </FormItem>
                 <Form.Item {...tailFormItemLayout}>
                     <Button id="clearButton" hidden onClick={e => {
