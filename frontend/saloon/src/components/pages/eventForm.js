@@ -3,7 +3,7 @@ import React from 'react';
 import {
     Form, Input, Button
 } from 'antd';
-
+const { TextArea } = Input;
 const FormItem = Form.Item;
 
 class EventForm extends React.Component {
