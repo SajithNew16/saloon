@@ -1,8 +1,23 @@
 import React, { Component } from 'react';
+import { withRouter, NavLink } from 'react-router-dom';
 import saloonImg from './saloon.PNG';
 
 class Header extends Component {
+
     render() {
+        let path = this.props.location.pathname;
+        let loginFormActive, homeActive, aboutUsActive, contactUsActive = '';
+
+        if (path === '/loginForm') {
+            loginFormActive = ' active';
+        } else if (path === '/') {
+            homeActive = ' active';
+        } else if (path === '/aboutus') {
+            aboutUsActive = ' active';
+        } else if (path === '/contactUs') {
+            contactUsActive = ' active';
+        }
+
         return (
             <header>
                 <nav className="navbar navbar-expand-md navbar-dark bg-dark">
@@ -12,14 +27,14 @@ class Header extends Component {
                     </button>
                     <div className="navbar-collapse collapse" id="navbarCollapse" styles="">
                         <ul className="navbar-nav mr-auto">
-                            <li className="nav-item active">
-                                <a className="nav-link" href="/"><b>Home</b> <span className="sr-only">(current)</span></a>
+                            <li className={`nav-item ${homeActive}`}>
+                                <NavLink className="nav-link" to="/" ><b>Home</b><span className="sr-only">(current)</span></NavLink>
                             </li>
-                            <li className="nav-item">
-                                <a className="nav-link" href="/aboutus"><span><b>About Us</b></span></a>
+                            <li className={`nav-item ${aboutUsActive}`}>
+                                <NavLink className="nav-link" to="/aboutus"><span><b>About Us</b></span></NavLink>
                             </li>
-                            <li className="nav-item">
-                                <a className="nav-link" href="/contactUs"><b>Contact Us</b></a>
+                            <li className={`nav-item ${contactUsActive}`}>
+                                <NavLink className="nav-link" to="/contactUs"><b>Contact Us</b></NavLink>
                             </li>
                             <li className="nav-item">
                                 <div className="dropdown">
@@ -27,13 +42,13 @@ class Header extends Component {
                                         <b>Sign Up</b>
                                     </button>
                                     <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                        <a className="dropdown-item " href="/stylistForm">Stylist</a>
-                                        <a className="dropdown-item " href="/saloonForm">Saloon Owner</a>
+                                        <NavLink className="dropdown-item " to="/stylistForm">Stylist</NavLink>
+                                        <NavLink className="dropdown-item " to="/saloonForm">Saloon Owner</NavLink>
                                     </div>
                                 </div>
                             </li>
-                            <li className="nav-item">
-                                <a className="nav-link" href="/loginForm"><b>Log In</b></a>
+                            <li className={`nav-item ${loginFormActive}`}>
+                                <NavLink className="nav-link" to="/loginForm"><b>Log In</b></NavLink>
                             </li>
                         </ul>
                     </div>
@@ -43,4 +58,4 @@ class Header extends Component {
     }
 }
 
-export default Header;
+export default withRouter(Header);

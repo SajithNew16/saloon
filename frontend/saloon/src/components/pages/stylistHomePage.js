@@ -9,9 +9,14 @@ const FormItem = Form.Item;
 class StylistHomePage extends React.Component {
 
     state = {
+        data: this.props.location.data,
         confirmDirty: false,
         autoCompleteResult: [],
     };
+
+    componentDidMount() {
+        console.log('drgdr' + this.state.data);
+    }
 
     handleSubmit = (e) => {
         e.preventDefault();
@@ -81,7 +86,7 @@ class StylistHomePage extends React.Component {
         };
 
         return (
-            <h2>Welcome{this.props.state}</h2>
+            <h2>Welcome {this.state.data}</h2>
             // <Form onSubmit={this.handleSubmit}>
             //     <h2>Welcome</h2>
             //     <FormItem

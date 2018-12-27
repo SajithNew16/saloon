@@ -4,6 +4,7 @@ import {
 import React from 'react';
 import axios from 'axios';
 import $ from 'jquery';
+import { Link } from 'react-router-dom';
 
 const FormItem = Form.Item;
 const experiences = [{
@@ -38,7 +39,6 @@ class StylistRegistrationForm extends React.Component {
         };
     }
 
-
     handleSubmit = (e) => {
         e.preventDefault();
         this.props.form.validateFieldsAndScroll((err, values) => {
@@ -49,7 +49,8 @@ class StylistRegistrationForm extends React.Component {
                         $('#clearButton').trigger("click");
                         var retVal = window.confirm("Successfully registered! Do you want to continue?");
                         if (retVal === true) {
-                            window.location.href = "http://localhost:3001/stylistHome";
+                            $('#nextPage').trigger("click");
+                            // window.location.href = "http://localhost:3001/stylistHome";
                             return true;
                         }
                         else {
@@ -143,7 +144,7 @@ class StylistRegistrationForm extends React.Component {
                     {getFieldDecorator('userName', {
                         rules: [{ required: true, message: 'Please input your User Name!', whitespace: true }],
                     })(
-                        <Input />
+                        <Input onChange={e => this.setState({ userName: e.target.value })} />
                     )}
                 </FormItem>
                 <FormItem
@@ -206,6 +207,9 @@ class StylistRegistrationForm extends React.Component {
                     <Button id="clearButton" hidden onClick={e => {
                         this.props.form.resetFields()
                     }} >Clear</Button>
+                    <Link to={{ pathname: "/stylistHome", data: this.state.userName }}>
+                        <Button id="nextPage" hidden type="primary" >Next page</Button>
+                    </Link>
                 </Form.Item>
                 <FormItem
                 >

@@ -22,7 +22,7 @@ app.post('/api/stylists', async (req, res) => {
             success: false,
             error: error.errors[0].message
         });
-        console.log("Error: " + error);
+        // console.log("Error: " + error);
     }
 });
 
@@ -45,7 +45,7 @@ app.post('/api/saloon', async (req, res) => {
 
 app.post('/api/login', async (req, res) => {
     try {
-        const saloon = await Saloon.findAll({
+        const saloon = await Saloon.findOne({
             where: {
                 email: req.body.email,
                 password: req.body.password

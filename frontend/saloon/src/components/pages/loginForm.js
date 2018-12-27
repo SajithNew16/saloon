@@ -9,6 +9,7 @@ class LoginForm extends React.Component {
   handleSubmit = (e) => {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
+      
       if (!err) {
         axios.post('http://localhost:3000/api/login', values).then(response => {
           console.log("Successful?: " + response.data.saloon);
@@ -57,7 +58,7 @@ class LoginForm extends React.Component {
         <Form.Item  {...formItemLayout}
           label="E-mail"
         >
-          {getFieldDecorator('userEmail', {
+          {getFieldDecorator('email', {
             rules: [{ type: 'email', required: true, message: 'Please input your Email!' }],
           })(
             <Input prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="Email" />
