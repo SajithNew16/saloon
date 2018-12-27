@@ -1,7 +1,7 @@
 var Sequelize = require('sequelize');
 module.exports = (sequelize, type) => {
     return sequelize.define('saloon', {
-        id: {
+        salId: {
             type: type.INTEGER,
             primaryKey: true,
             autoIncrement: true

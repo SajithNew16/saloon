@@ -1,7 +1,7 @@
 var Sequelize = require('sequelize');
 module.exports = (sequelize, type) => {
     return sequelize.define('stylist', {
-        id: {
+        styId: {
             type: type.INTEGER,
             primaryKey: true,
             autoIncrement: true

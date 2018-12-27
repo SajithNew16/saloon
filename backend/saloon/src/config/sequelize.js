@@ -2,8 +2,10 @@ const Sequelize = require('sequelize');
 const StylistModel = require('../model/stylist');
 const SaloonModel = require('../model/saloon');
 const Sty_jobModel = require('../model/sty_job');
+const BookingModel = require('../model/booking');
+const WorkingModel = require('../model/working');
 
-const sequelize = new Sequelize('saloon', 'root', '', {
+const sequelize = new Sequelize('saloon', 'root', 'root', {
     host: 'localhost',
     dialect: 'mysql',
     pool: {
@@ -17,11 +19,15 @@ const sequelize = new Sequelize('saloon', 'root', '', {
 const Stylist = StylistModel(sequelize, Sequelize);
 const Saloon = SaloonModel(sequelize, Sequelize);
 const StylistJob = Sty_jobModel(sequelize, Sequelize);
+const Booking = BookingModel(sequelize, Sequelize);
+const Working = WorkingModel(sequelize, Sequelize);
 
 sequelize.sync({ force: false });
 
 module.exports = {
     Stylist,
     Saloon,
-    StylistJob
+    StylistJob,
+    Booking,
+    Working
 }
