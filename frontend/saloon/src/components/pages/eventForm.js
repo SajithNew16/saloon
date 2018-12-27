@@ -1,7 +1,7 @@
 import { DatePicker } from 'antd';
 import React from 'react';
 import {
-    Form, Input, Col, Row
+    Form, Input, Button
 } from 'antd';
 
 const FormItem = Form.Item;
@@ -88,8 +88,8 @@ class EventForm extends React.Component {
                 sm: { span: 8 },
             },
             wrapperCol: {
-                xs: { span: 24 },
-                sm: { span: 14 },
+                xs: { span: 14 },
+                sm: { span: 10 },
             },
         };
         const tailFormItemLayout = {
@@ -120,12 +120,20 @@ class EventForm extends React.Component {
                 </FormItem>
                 <FormItem
                     {...formItemLayout}
+                    label="Task"
+                >
+                    {getFieldDecorator('task', {
+                        rules: [{ required: true, message: 'Please input your assigned task!', whitespace: true }],
+                    })(
+                        <TextArea />
+                    )}
+                </FormItem>
+                <FormItem
+                    {...formItemLayout}
                     label="Start Date"
                 >
                     {getFieldDecorator('startValue', {
                         rules: [{
-                            message: 'The input is not a valid Start Date!'
-                        }, {
                             required: true, message: 'Please input your Starting Date for the assigned task',
                         }],
                     })(
@@ -139,18 +147,29 @@ class EventForm extends React.Component {
                         />
                     )}
                 </FormItem>
-
-                <DatePicker
-                    disabledDate={this.disabledEndDate}
-                    showTime
-                    format="YYYY-MM-DD HH:mm:ss"
-                    value={endValue}
-                    placeholder="End"
-                    onChange={this.onEndChange}
-                    open={endOpen}
-                    onOpenChange={this.handleEndOpenChange}
-                />
-
+                <FormItem
+                    {...formItemLayout}
+                    label="End Date"
+                >
+                    {getFieldDecorator('endValue', {
+                        rules: [{
+                            required: true, message: 'Please input your Ending Date for the assigned task',
+                        }],
+                    })(
+                        <DatePicker
+                            disabledDate={this.disabledEndDate}
+                            showTime
+                            format="YYYY-MM-DD HH:mm:ss"
+                            placeholder="End"
+                            onChange={this.onEndChange}
+                            open={endOpen}
+                            onOpenChange={this.handleEndOpenChange}
+                        />
+                    )}
+                </FormItem>
+                <FormItem {...tailFormItemLayout}>
+                    <Button type="primary" htmlType="submit">Add to Event Calendar</Button>
+                </FormItem>
             </Form>
         );
     }
