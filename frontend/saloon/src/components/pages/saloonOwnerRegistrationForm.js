@@ -18,10 +18,35 @@ class SaloonOwnerRegistrationForm extends React.Component {
         e.preventDefault();
         this.props.form.validateFieldsAndScroll((err, values) => {
             if (!err) {
-                axios.post('http://localhost:3000/api/saloon', values).then(response => {
-                    console.log("Successful" + response);
+                axios.post('http://localhost:3000/api/user', values).then(response => {
                     if (response.data.success) {
                         $('#clearButton').trigger("click");
+                        var email = values.email;
+                        //get user id by email
+                        axios.get('http://localhost:3000/api/user/' + email)
+                            .then(res => {
+                                var userId = JSON.stringify(res.data.userId);
+                                // $('#userIdTxt').val(userId);
+                                // console.log($('#userIdTxt').val());
+                                // console.log(values.userId);
+                                this.props.form.setFieldsValue({ location: userId });
+                                console.log(values.location);
+                                // this.props.forms.location = "fe";
+                                // this.props.forms.userId = userId;
+                                // console.log(values.userId);
+                                //insert into saloon table
+                                axios.post('http://localhost:3000/api/saloon', values).then(res => {
+                                    if (res.data.success) {
+                                        console.log("added");
+                                    }
+                                    else {
+                                        console.log("not added " + res.data.err);
+                                    }
+                                })
+                            })
+
+
+
                         var retVal = window.confirm("Successfully registered! Do you want to continue?");
                         if (retVal === true) {
                             window.location.href = "http://localhost:3001/saloonHome";
@@ -32,7 +57,6 @@ class SaloonOwnerRegistrationForm extends React.Component {
                         }
                     } else {
                         alert("Email has already existing! So you should have an account in Comcast. If you have any queries please post it on our contact us page");
-                        console.log(response.data.error)
                     }
                 })
             }
@@ -195,6 +219,14 @@ class SaloonOwnerRegistrationForm extends React.Component {
                         rules: [{ whitespace: true }],
                     })(
                         <Input hidden />
+                    )}
+                </FormItem>
+                <FormItem
+                >
+                    {getFieldDecorator('userId', {
+                        rules: [{ whitespace: true }],
+                    })(
+                        <Input id="userIdTxt" />
                     )}
                 </FormItem>
             </Form>

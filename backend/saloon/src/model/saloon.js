@@ -7,14 +7,16 @@ module.exports = (sequelize, type) => {
             autoIncrement: true
         },
         userName: type.STRING,
-        password: type.STRING,
-        email: {
-            type: type.STRING,
-            unique: true
-        },
-        type: type.STRING,
         saloonName: type.STRING,
-        location: type.STRING
+        location: type.STRING,
+        userId: {
+            type: type.INTEGER,
+            foreignKey: true,
+            references: {
+                model: 'users',
+                key: 'userId'
+            }
+        }
     })
 }
 

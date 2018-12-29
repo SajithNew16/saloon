@@ -4,6 +4,7 @@ const SaloonModel = require('../model/saloon');
 const Sty_jobModel = require('../model/sty_job');
 const BookingModel = require('../model/booking');
 const WorkingModel = require('../model/working');
+const UserModel = require('../model/user');
 
 const sequelize = new Sequelize('saloon', 'root', 'root', {
     host: 'localhost',
@@ -21,6 +22,7 @@ const Saloon = SaloonModel(sequelize, Sequelize);
 const StylistJob = Sty_jobModel(sequelize, Sequelize);
 const Booking = BookingModel(sequelize, Sequelize);
 const Working = WorkingModel(sequelize, Sequelize);
+const User = UserModel(sequelize, Sequelize);
 
 sequelize.sync({ force: false });
 
@@ -29,5 +31,6 @@ module.exports = {
     Saloon,
     StylistJob,
     Booking,
-    Working
+    Working,
+    User
 }

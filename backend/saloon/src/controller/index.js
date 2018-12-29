@@ -2,46 +2,65 @@
 const express = require("express");
 const bodyparser = require("body-parser");
 const cors = require('cors');
-const { Stylist, Saloon } = require('../config/sequelize');
+const { Stylist, Saloon, User } = require('../config/sequelize');
 
 const app = express();
 app.use(cors());
 app.use(bodyparser.json());
 
-// create a stylist
-app.post('/api/stylists', async (req, res) => {
-    try {
-        console.log(req.body);
-        const stylist = await Stylist.create(req.body);
-        res.json({
+// create a user
+app.post('/api/user', (req, res) => {
+    User.create(req.body)
+        .then(user => res.json({
             success: true,
-            stylist: stylist
-        });
-    } catch (error) {
-        res.json({
+            user: user
+        }))
+        .catch(err => res.json({
             success: false,
-            error: error.errors[0].message
-        });
-        // console.log("Error: " + error);
-    }
+            err: err.errors
+        }))
+});
+
+//retrieve user id by email
+app.get('/api/user/:email?', (req, res) => {
+    User.findOne({
+        where: {
+            email: req.params.email
+        },
+        attributes: ['userId']
+    }).then(user => res.json(user))
+        .catch(err => res.json(err))
 });
 
 // create a saloon owner
-app.post('/api/saloon', async (req, res) => {
-    try {
-        const saloon = await Saloon.create(req.body);
-        res.json({
+app.post('/api/saloon', (req, res) => {
+    Saloon.create(req.body)
+        .then(saloon => res.json({
             success: true,
             saloon: saloon
-        });
-    } catch (error) {
-        res.json({
+        }))
+        .catch(err => res.json({
             success: false,
-            error: error.errors[0].message
-        });
-        console.log("Error: " + error);
-    }
+            err: err.errors
+        }))
 });
+
+// // create a saloon owner
+// app.post('/api/saloon', async (req, res) => {
+//     try {
+//         const saloon = await Saloon.create(req.body);
+//         res.json({
+//             success: true,
+//             saloon: saloon
+//         });
+//     } catch (error) {
+//         res.json({
+//             success: false,
+//             error: error.errors[0].message
+//         });
+//         console.log("Error: " + error);
+//     }
+// });
 
 app.post('/api/login', async (req, res) => {
     try {

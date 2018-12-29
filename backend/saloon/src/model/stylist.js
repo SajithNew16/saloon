@@ -7,11 +7,6 @@ module.exports = (sequelize, type) => {
             autoIncrement: true
         },
         userName: type.STRING,
-        password: type.STRING,
-        email: {
-            type: type.STRING,
-            unique: true
-        },
         experience: {
             type: Sequelize.STRING,
             get() {
@@ -21,7 +16,14 @@ module.exports = (sequelize, type) => {
                 this.setDataValue('experience', val.join(';'));
             },
         },
-        type: type.STRING
+        userId: {
+            type: type.INTEGER,
+            foreignKey: true,
+            references: {
+                model: 'users',
+                key: 'userId'
+            }
+        }
     })
 }
 
