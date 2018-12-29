@@ -58,7 +58,21 @@ app.post('/api/stylist', (req, res) => {
         }))
 });
 
-
+//check for the availability when logging
+app.post('/api/login', (req, res) => {
+    User.findOne({
+        where: {
+            email: req.body.email,
+            password: req.body.password
+        }
+    }).then(user => res.json({
+        success: true,
+        user: user
+    })).catch(err => res.json({
+        success: false,
+        err: err.errors
+    }))
+})
 
 // search all stylists by name
 app.get('/api/saloon/:userName', (req, res) => {
@@ -71,28 +85,7 @@ app.get('/api/saloon/:userName', (req, res) => {
 })
 
 
-app.post('/api/login', async (req, res) => {
-    try {
-        const saloon = await Saloon.findOne({
-            where: {
-                email: req.body.email,
-                password: req.body.password
-            }
-        });
-        res.json({
-            // success: true,
-            // result: saloon[0].id,
-            saloon: saloon
-        });
-    } catch (error) {
-        res.json({
-            // success: false,
-            // result: saloon[0].id,
-            saloon: saloon,
-            error: error.errors[0].message
-        });
-    }
-});
+
 
 //get the id of the saloon owner
 // app.post('/api/login', (req, res) => {

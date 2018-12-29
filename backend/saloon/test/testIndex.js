@@ -61,3 +61,18 @@ describe('/POST Create Stylist', () => {
             });
     });
 });
+describe('/POST authenticate User', () => {
+    it('Verify User Testing', (done) => {
+        let user = {
+            'email': 'chamaraliyanage604@gmail.com',
+            'password': 'da'
+        }
+        chai.request('http://localhost:3000')
+            .post('/api/login')
+            .send(user)
+            .end((err, res) => {
+                chai.expect(res.body.user).to.equal(null);
+                done();
+            });
+    });
+});
