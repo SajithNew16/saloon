@@ -43,14 +43,28 @@ class StylistRegistrationForm extends React.Component {
         e.preventDefault();
         this.props.form.validateFieldsAndScroll((err, values) => {
             if (!err) {
-                axios.post('http://localhost:3000/api/stylists', values).then(response => {
-                    console.log("Successful" + response);
+                axios.post('http://localhost:3000/api/user', values).then(response => {
                     if (response.data.success) {
                         $('#clearButton').trigger("click");
+                        var email = values.email;
+                        //get user id by email
+                        axios.get('http://localhost:3000/api/user/' + email)
+                            .then(res => {
+                                var userId = JSON.stringify(res.data.userId);
+                                values.userId = userId;
+                                //insert into stylist table
+                                axios.post('http://localhost:3000/api/stylist', values).then(res => {
+                                    if (res.data.success) {
+                                        console.log("added to stylist table");
+                                    }
+                                    else {
+                                        console.log("not added because " + res.data.err);
+                                    }
+                                })
+                            })
                         var retVal = window.confirm("Successfully registered! Do you want to continue?");
                         if (retVal === true) {
-                            $('#nextPage').trigger("click");
-                            // window.location.href = "http://localhost:3001/stylistHome";
+                            window.location.href = "http://localhost:3001/stylistHome";
                             return true;
                         }
                         else {
@@ -58,11 +72,11 @@ class StylistRegistrationForm extends React.Component {
                         }
                     } else {
                         alert("Email has already existing! So you should have an account in Comcast. If you have any queries please post it on our contact us page");
-                        console.log(response.data.error)
                     }
                 })
+
             }
-        });
+        }); 
     }
 
     handleClearForm = (e) => {

@@ -26,27 +26,17 @@ class SaloonOwnerRegistrationForm extends React.Component {
                         axios.get('http://localhost:3000/api/user/' + email)
                             .then(res => {
                                 var userId = JSON.stringify(res.data.userId);
-                                // $('#userIdTxt').val(userId);
-                                // console.log($('#userIdTxt').val());
-                                // console.log(values.userId);
-                                this.props.form.setFieldsValue({ location: userId });
-                                console.log(values.location);
-                                // this.props.forms.location = "fe";
-                                // this.props.forms.userId = userId;
-                                // console.log(values.userId);
+                                values.userId = userId;
                                 //insert into saloon table
                                 axios.post('http://localhost:3000/api/saloon', values).then(res => {
                                     if (res.data.success) {
-                                        console.log("added");
+                                        console.log("added to saloon table");
                                     }
                                     else {
-                                        console.log("not added " + res.data.err);
+                                        console.log("not added because " + res.data.err);
                                     }
                                 })
                             })
-
-
-
                         var retVal = window.confirm("Successfully registered! Do you want to continue?");
                         if (retVal === true) {
                             window.location.href = "http://localhost:3001/saloonHome";
@@ -226,7 +216,7 @@ class SaloonOwnerRegistrationForm extends React.Component {
                     {getFieldDecorator('userId', {
                         rules: [{ whitespace: true }],
                     })(
-                        <Input id="userIdTxt" />
+                        <Input hidden />
                     )}
                 </FormItem>
             </Form>

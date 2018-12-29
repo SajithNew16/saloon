@@ -18,7 +18,7 @@ describe('/POST Create User', () => {
             });
     });
 });
-describe('GET User Id by email', () => {
+describe('/GET User Id by email', () => {
     it('Get User Id testing', (done) => {
         chai.request('http://localhost:3000')
             .get('/api/user/chamaraliyanage604@gmail.com')
@@ -40,6 +40,21 @@ describe('/POST Create Saloon Owner', () => {
         chai.request('http://localhost:3000')
             .post('/api/saloon')
             .send(saloon)
+            .end((err, res) => {
+                chai.expect(res.status).to.equal(200);
+                done();
+            });
+    });
+});
+describe('/POST Create Stylist', () => {
+    it('Create Stylist Testing', (done) => {
+        let stylist = {
+            'userName': 'he81',
+            'type': 'stylist'
+        }
+        chai.request('http://localhost:3000')
+            .post('/api/stylist')
+            .send(stylist)
             .end((err, res) => {
                 chai.expect(res.status).to.equal(200);
                 done();

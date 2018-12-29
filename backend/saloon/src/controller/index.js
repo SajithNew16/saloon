@@ -45,22 +45,31 @@ app.post('/api/saloon', (req, res) => {
         }))
 });
 
-// // create a saloon owner
-// app.post('/api/saloon', async (req, res) => {
-//     try {
-//         const saloon = await Saloon.create(req.body);
-//         res.json({
-//             success: true,
-//             saloon: saloon
-//         });
-//     } catch (error) {
-//         res.json({
-//             success: false,
-//             error: error.errors[0].message
-//         });
-//         console.log("Error: " + error);
-//     }
-// });
+// create a stylist
+app.post('/api/stylist', (req, res) => {
+    Stylist.create(req.body)
+        .then(stylist => res.json({
+            success: true,
+            stylist: stylist
+        }))
+        .catch(err => res.json({
+            success: false,
+            err: err.errors
+        }))
+});
+
+
+
+// search all stylists by name
+app.get('/api/saloon/:userName', (req, res) => {
+    // console.log("hi " + req.params.userName);
+    Saloon.findAll({
+        where: {
+            userName: req.params.userName
+        }
+    }).then((saloon) => res.json({ saloon: saloon }));
+})
+
 
 app.post('/api/login', async (req, res) => {
     try {
