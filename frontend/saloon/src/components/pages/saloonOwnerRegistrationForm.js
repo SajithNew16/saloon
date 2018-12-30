@@ -3,16 +3,27 @@ import {
 } from 'antd';
 import React from 'react';
 import axios from 'axios';
-import { NavLink } from 'react-router-dom';
+import { NavLink, Link } from 'react-router-dom';
 import $ from 'jquery';
 
 const FormItem = Form.Item;
 
 class SaloonOwnerRegistrationForm extends React.Component {
-    state = {
-        confirmDirty: false,
-        autoCompleteResult: [],
-    };
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            confirmDirty: false,
+            autoCompleteResult: [],
+            userName: '',
+            email: '',
+            experience: [],
+            password: '',
+            type: '',
+            userId: ''
+        };
+    }
+
 
     handleSubmit = (e) => {
         e.preventDefault();
@@ -39,7 +50,8 @@ class SaloonOwnerRegistrationForm extends React.Component {
                             })
                         var retVal = window.confirm("Successfully registered! Do you want to continue?");
                         if (retVal === true) {
-                            window.location.href = "http://localhost:3001/saloonHome";
+                            $('#nextPage').trigger("click");
+                            // window.location.href = "http://localhost:3001/saloonHome";
                             return true;
                         }
                         else {
@@ -142,7 +154,7 @@ class SaloonOwnerRegistrationForm extends React.Component {
                             required: true, message: 'Please input your E-mail!',
                         }],
                     })(
-                        <Input />
+                        <Input onChange={e => this.setState({ email: e.target.value })} />
                     )}
                 </FormItem>
                 <FormItem
@@ -201,19 +213,14 @@ class SaloonOwnerRegistrationForm extends React.Component {
                     <Button id="clearButton" hidden onClick={e => {
                         this.props.form.resetFields()
                     }} >Clear</Button>
+                    <Link to={{ pathname: "/saloonHome", data: this.state.email }}>
+                        <Button id="nextPage" hidden type="primary" >Next page</Button>
+                    </Link>
                 </Form.Item>
                 <FormItem
                 >
                     {getFieldDecorator('type', {
                         initialValue: "saloon",
-                        rules: [{ whitespace: true }],
-                    })(
-                        <Input hidden />
-                    )}
-                </FormItem>
-                <FormItem
-                >
-                    {getFieldDecorator('userId', {
                         rules: [{ whitespace: true }],
                     })(
                         <Input hidden />

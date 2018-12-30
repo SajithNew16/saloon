@@ -9,6 +9,8 @@ import StylistHome from './pages/stylistHomePage';
 import SaloonHome from './pages/SaloonHomePage';
 import ContactUs from './pages/contactUsPage';
 import EventForm from './pages/eventForm';
+import StylistProfile from './pages/stylistProfile';
+import SaloonProfile from './pages/saloonProfile';
 
 const Body = () => (
 
@@ -23,6 +25,8 @@ const Body = () => (
             <Route exact path='/saloonHome' component={SaloonHome} />
             <Route exact path='/contactUs' component={ContactUs} />
             <Route exact path='/eventForm' component={EventForm} />
+            <Route exact path='/stylistProf' component={StylistProfile} />
+            <Route exact path='/saloonProf' component={SaloonProfile} />
         </Switch>
     </main>
 

@@ -74,6 +74,42 @@ app.post('/api/login', (req, res) => {
     }))
 })
 
+//retrieve stylist data
+app.get('/api/stylist/:userId', (req, res) => {
+    Stylist.findOne({
+        where: {
+            userId: req.params.userId
+        }
+    }).then(stylist => res.json({
+        stylist: stylist
+    }))
+})
+
+//retrieve saloon data
+app.get('/api/saloon/:userId', (req, res) => {
+    Saloon.findOne({
+        where: {
+            userId: req.params.userId
+        }
+    }).then(saloon => res.json({
+        saloon: saloon
+    }))
+})
+
+//update stylist profie
+app.put('/api/stylist/:userId', (req, res, err) => {
+    Stylist.update(
+        { userName: req.body.userName, email: req.body.email },
+        {
+            where: {
+                userId: req.params.userId
+            }
+        }
+    ).then(function (rowsUpdated) {
+        res.json(rowsUpdated)
+    }).catch(err)
+})
+
 // search all stylists by name
 app.get('/api/saloon/:userName', (req, res) => {
     // console.log("hi " + req.params.userName);

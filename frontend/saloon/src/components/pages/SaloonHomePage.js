@@ -1,22 +1,53 @@
 import {
-    Form, Input, Tooltip, Icon, Button
+    Form, Card, Col, Row, InputNumber, Button, Input
 } from 'antd';
 import React from 'react';
-import StylistRegistrationForm from './stylistRegistrationForm';
+import { NavLink } from 'react-router-dom';
+import axios from 'axios';
 
 const FormItem = Form.Item;
 
-class StylistHomePage extends  StylistRegistrationForm {
-   
-    state = {
-        confirmDirty: false,
-        autoCompleteResult: [],
-    };
+class SaloonHomePage extends React.Component {
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            confirmDirty: false,
+            autoCompleteResult: [],
+            userName: '',
+            email: '',
+            saloonName: '',
+            password: '',
+            location: '',
+            type: '',
+            userId: '',
+            data: this.props.location.data,
+        };
+    }
+
+    componentDidMount() {
+        console.log('user email ' + this.state.data);
+        // get user id by email
+        if (this.state.data != null) {
+            axios.get('http://localhost:3000/api/user/' + this.state.data)
+                .then(res => {
+                    this.setState({
+                        userId: JSON.stringify(res.data.userId)
+                    }, () => { console.log(this.state.userId) })
+                })
+        }
+
+        console.log('user id ' + this.state.userId);
+    }
 
     handleSubmit = (e) => {
         e.preventDefault();
+        console.log('user id 1st submit ' + this.state.userId);
+
         this.props.form.validateFieldsAndScroll((err, values) => {
             if (!err) {
+                console.log('user id 2nd submit ' + this.state.userId);
+
                 console.log('Received values of form: ', values);
             }
         });
@@ -79,98 +110,85 @@ class StylistHomePage extends  StylistRegistrationForm {
                 },
             },
         };
-
+        function onChange(value) {
+            console.log('changed', value);
+        }
         return (
-            <h2>Welcome</h2>
-            // <Form onSubmit={this.handleSubmit}>
-            //     <h2>Welcome</h2>
-            //     <FormItem
-            //         {...formItemLayout}
-            //         label={(
-            //             <span>
-            //                 User Name&nbsp;
-            //     <Tooltip title="What do you want others to call you?">
-            //                     <Icon type="question-circle-o" />
-            //                 </Tooltip>
-            //             </span>
-            //         )}
-            //     >
-            //         {getFieldDecorator('userName', {
-            //             rules: [{ required: true, message: 'Please input your User Name!', whitespace: true }],
-            //         })(
-            //             <Input />
-            //         )}
-            //     </FormItem>
-            //     <FormItem
-            //         {...formItemLayout}
-            //         label="E-mail"
-            //     >
-            //         {getFieldDecorator('email', {
-            //             rules: [{
-            //                 type: 'email', message: 'The input is not valid E-mail!',
-            //             }, {
-            //                 required: true, message: 'Please input your E-mail!',
-            //             }],
-            //         })(
-            //             <Input />
-            //         )}
-            //     </FormItem>
-            //     <FormItem
-            //         {...formItemLayout}
-            //         label="Saloon Name"
-            //     >
-            //         {getFieldDecorator('saloonName', {
-            //             rules: [{ required: true, message: 'Please input your Saloon Name!', whitespace: true }],
-            //         })(
-            //             <Input />
-            //         )}
-            //     </FormItem>
-            //     <FormItem
-            //         {...formItemLayout}
-            //         label="Location"
-            //     >
-            //         {getFieldDecorator('Saloon Location', {
-            //             rules: [{ required: true, message: 'Please input your Saloon Location!', whitespace: true }],
-            //         })(
-            //             <Input />
-            //         )}
-            //     </FormItem>
-            //     <FormItem
-            //         {...formItemLayout}
-            //         label="Password"
-            //     >
-            //         {getFieldDecorator('password', {
-            //             rules: [{
-            //                 required: true, message: 'Please input your password!',
-            //             }, {
-            //                 validator: this.validateToNextPassword,
-            //             }],
-            //         })(
-            //             <Input type="password" />
-            //         )}
-            //     </FormItem>
-            //     <FormItem
-            //         {...formItemLayout}
-            //         label="Confirm Password"
-            //     >
-            //         {getFieldDecorator('confirm', {
-            //             rules: [{
-            //                 required: true, message: 'Please confirm your password!',
-            //             }, {
-            //                 validator: this.compareToFirstPassword,
-            //             }],
-            //         })(
-            //             <Input type="password" onBlur={this.handleConfirmBlur} />
-            //         )}
-            //     </FormItem>
-            //     <FormItem {...tailFormItemLayout}>
-            //         <Button type="primary" htmlType="submit">Sign Up</Button>
-            //         <center>Already have an account? <a href="/">Log In</a></center>
-            //     </FormItem>
-            // </Form>
+            <div>
+                <div style={{ background: '#ECECEC', padding: '30px' }}>
+                    <h2>Welcome Saloon Owner</h2>
+                    <Row gutter={16}>
+                        <Col span={8}>
+                            <Card title="Your Profile" bordered={false}><NavLink to={{ pathname: "/saloonProf", data: this.state.userId }}>View Your Profile</NavLink></Card>
+                        </Col>
+                        <Col span={8}>
+                            <Card title="Notifications" bordered={false}>Card content</Card>
+                        </Col>
+                        <Col span={8}>
+                            <Card title="Event Calendar" bordered={false}><NavLink to="/eventForm">Enter your new events</NavLink></Card>
+                        </Col>
+                    </Row>
+                </div>
+                <div style={{ background: '#ECECEC', padding: '30px' }}>
+                    <h3>Update Your Charges Rate {this.state.data}</h3>
+                    <Row gutter={16}>
+                        <Col span={8}>
+                            <Card title="Per Man" bordered={false}>
+                                <InputNumber
+                                    defaultValue={0}
+                                    formatter={value => `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                                    parser={value => value.replace(/\$\s?|(,*)/g, '')}
+                                    onChange={onChange}
+                                />
+                                <p />
+                                <Button type="primary">Add</Button>
+                            </Card>
+                        </Col>
+                        <Col span={8}>
+                            <Card title="Per Woman" bordered={false}>
+                                <InputNumber
+                                    defaultValue={0}
+                                    formatter={value => `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                                    parser={value => value.replace(/\$\s?|(,*)/g, '')}
+                                    onChange={onChange}
+                                />
+                                <p />
+                                <Button type="primary">Add</Button>
+                            </Card>
+                        </Col>
+                        <Col span={8}>
+                            <Card title="Per Kid" bordered={false}>
+                                <InputNumber
+                                    defaultValue={0}
+                                    formatter={value => `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                                    parser={value => value.replace(/\$\s?|(,*)/g, '')}
+                                    onChange={onChange}
+                                />
+                                <p />
+                                <Button type="primary">Add</Button>
+                            </Card>
+                        </Col>
+                    </Row>
+                    <Form onSubmit={this.handleSubmit}>
+                        <FormItem {...tailFormItemLayout}>
+                            <Button type="primary" htmlType="submit">Sign Up</Button>
+                        </FormItem>
+                        {/* <FormItem
+                            {...formItemLayout}
+                        >
+                            {getFieldDecorator('userId', {
+                                rules: [{ whitespace: true }],
+                            })(
+                                <Input hidden onChange={e => this.setState({ email: e.target.value })} />
+                            )}
+                        </FormItem> */}
+                    </Form>
+                </div>
+            </div>
+
         );
     }
 }
 
-const WrappedStylistHome = Form.create()(StylistHomePage);
+const WrappedStylistHome = Form.create()(SaloonHomePage);
 export default WrappedStylistHome;

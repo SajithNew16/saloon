@@ -35,7 +35,8 @@ class StylistRegistrationForm extends React.Component {
             email: '',
             experience: [],
             password: '',
-            type: ''
+            type: '',
+            userId: ''
         };
     }
 
@@ -45,7 +46,7 @@ class StylistRegistrationForm extends React.Component {
             if (!err) {
                 axios.post('http://localhost:3000/api/user', values).then(response => {
                     if (response.data.success) {
-                        $('#clearButton').trigger("click");
+                        // $('#clearButton').trigger("click");
                         var email = values.email;
                         //get user id by email
                         axios.get('http://localhost:3000/api/user/' + email)
@@ -64,7 +65,7 @@ class StylistRegistrationForm extends React.Component {
                             })
                         var retVal = window.confirm("Successfully registered! Do you want to continue?");
                         if (retVal === true) {
-                            window.location.href = "http://localhost:3001/stylistHome";
+                            $('#nextPage').trigger("click");
                             return true;
                         }
                         else {
@@ -76,7 +77,7 @@ class StylistRegistrationForm extends React.Component {
                 })
 
             }
-        }); 
+        });
     }
 
     handleClearForm = (e) => {
@@ -158,7 +159,7 @@ class StylistRegistrationForm extends React.Component {
                     {getFieldDecorator('userName', {
                         rules: [{ required: true, message: 'Please input your User Name!', whitespace: true }],
                     })(
-                        <Input onChange={e => this.setState({ userName: e.target.value })} />
+                        <Input />
                     )}
                 </FormItem>
                 <FormItem
@@ -172,7 +173,7 @@ class StylistRegistrationForm extends React.Component {
                             required: true, message: 'Please input your E-mail!',
                         }],
                     })(
-                        <Input />
+                        <Input onChange={e => this.setState({ email: e.target.value })} />
                     )}
                 </FormItem>
                 <FormItem
@@ -221,7 +222,7 @@ class StylistRegistrationForm extends React.Component {
                     <Button id="clearButton" hidden onClick={e => {
                         this.props.form.resetFields()
                     }} >Clear</Button>
-                    <Link to={{ pathname: "/stylistHome", data: this.state.userName }}>
+                    <Link to={{ pathname: "/stylistHome", data: this.state.email }}>
                         <Button id="nextPage" hidden type="primary" >Next page</Button>
                     </Link>
                 </Form.Item>

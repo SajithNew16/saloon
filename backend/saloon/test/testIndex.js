@@ -76,3 +76,24 @@ describe('/POST authenticate User', () => {
             });
     });
 });
+describe('/GET stylist data', () => {
+    it('GET stylist data Testing', (done) => {
+        chai.request('http://localhost:3000')
+            .get('/api/stylist/1')
+            .end((err, res) => {
+                chai.expect(res.status).to.equal(200);
+                done();
+            });
+    });
+});
+describe('/GET saloon data', () => {
+    it('GET saloon data Testing', (done) => {
+        chai.request('http://localhost:3000')
+            .get('/api/saloon/1')
+            .end((err, res) => {
+                chai.expect(res.status).to.equal(200);
+                done();
+            });
+    });
+});
+

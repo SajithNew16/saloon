@@ -7,15 +7,16 @@ module.exports = (sequelize, type) => {
             autoIncrement: true
         },
         userName: type.STRING,
-        experience: {
-            type: Sequelize.STRING,
-            get() {
-                return this.getDataValue('experience').split(';')
-            },
-            set(val) {
-                this.setDataValue('experience', val.join(';'));
-            },
-        },
+        // experience: {
+        //     type: Sequelize.STRING,
+        //     get() {
+        //         return this.getDataValue('experience').split(';')
+        //     },
+        //     set(val) {
+        //         this.setDataValue('experience', val.join(';'));
+        //     },
+        // },
+        chargesMan: type.INTEGER,
         userId: {
             type: type.INTEGER,
             foreignKey: true,
@@ -23,6 +24,10 @@ module.exports = (sequelize, type) => {
                 model: 'users',
                 key: 'userId'
             }
+        },
+        email: {
+            type: type.STRING,
+            unique: true
         }
     })
 }

@@ -23,6 +23,9 @@ const StylistJob = Sty_jobModel(sequelize, Sequelize);
 const Booking = BookingModel(sequelize, Sequelize);
 const Working = WorkingModel(sequelize, Sequelize);
 const User = UserModel(sequelize, Sequelize);
+// const UserStylist = sequelize.define('user_stylist', {});
+
+// User.belongsToMany(UserStylist, { through: UserStylist, unique: false })
 
 sequelize.sync({ force: false });
 

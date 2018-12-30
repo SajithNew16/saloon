@@ -16,6 +16,10 @@ module.exports = (sequelize, type) => {
                 model: 'users',
                 key: 'userId'
             }
+        },
+        email: {
+            type: type.STRING,
+            unique: true
         }
     })
 }
