@@ -21,7 +21,7 @@ describe('/POST Create User', () => {
 describe('/GET User Id by email', () => {
     it('Get User Id testing', (done) => {
         chai.request('http://localhost:3000')
-            .get('/api/user/chamaraliyanage604@gmail.com')
+            .get('/api/user/chamaraliyanage604@gmail.comwwed')
             .end((err, res) => {
                 chai.expect(res.status).to.equal(200);
                 chai.expect(res.body.userId).to.equal(1);
@@ -90,6 +90,21 @@ describe('/GET saloon data', () => {
     it('GET saloon data Testing', (done) => {
         chai.request('http://localhost:3000')
             .get('/api/saloon/1')
+            .end((err, res) => {
+                chai.expect(res.status).to.equal(200);
+                done();
+            });
+    });
+});
+describe('/PUT User', () => {
+    it('Update stylist data Testing', (done) => {
+        let user = {
+            'email': 'chamaraliyafdfdfeg3nage604@gmail.com',
+            'password': 'da'
+        }
+        chai.request('http://localhost:3000')
+            .put('/api/stylist/1')
+            .send(user)
             .end((err, res) => {
                 chai.expect(res.status).to.equal(200);
                 done();
