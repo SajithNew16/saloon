@@ -18,10 +18,20 @@ describe('/POST Create User', () => {
             });
     });
 });
+describe('/DELETE above User', () => {
+    it('delete User by mail testing', (done) => {
+        chai.request('http://localhost:3000')
+            .delete('/api/userByEmail/erf@frse.com')
+            .end((err, res) => {
+                chai.expect(res.status).to.equal(200);
+                done();
+            });
+    });
+});
 describe('/GET User Id by email', () => {
     it('Get User Id testing', (done) => {
         chai.request('http://localhost:3000')
-            .get('/api/user/chamaraliyanage604@gmail.comwwed')
+            .get('/api/user/chamaraliyanage604@gmail.com')
             .end((err, res) => {
                 chai.expect(res.status).to.equal(200);
                 chai.expect(res.body.userId).to.equal(1);
@@ -29,38 +39,38 @@ describe('/GET User Id by email', () => {
             });
     });
 });
-describe('/POST Create Saloon Owner', () => {
-    it('Create User Testing', (done) => {
-        let saloon = {
-            'userName': 'he8',
-            'saloonName': 'rferr',
-            'location': 'errse',
-            'type': 'saloon'
-        }
-        chai.request('http://localhost:3000')
-            .post('/api/saloon')
-            .send(saloon)
-            .end((err, res) => {
-                chai.expect(res.status).to.equal(200);
-                done();
-            });
-    });
-});
-describe('/POST Create Stylist', () => {
-    it('Create Stylist Testing', (done) => {
-        let stylist = {
-            'userName': 'he81',
-            'type': 'stylist'
-        }
-        chai.request('http://localhost:3000')
-            .post('/api/stylist')
-            .send(stylist)
-            .end((err, res) => {
-                chai.expect(res.status).to.equal(200);
-                done();
-            });
-    });
-});
+// describe('/POST Create Saloon Owner', () => {
+//     it('Create User Testing', (done) => {
+//         let saloon = {
+//             'userName': 'he8',
+//             'saloonName': 'rferr',
+//             'location': 'errse',
+//             'type': 'saloon'
+//         }
+//         chai.request('http://localhost:3000')
+//             .post('/api/saloon')
+//             .send(saloon)
+//             .end((err, res) => {
+//                 chai.expect(res.status).to.equal(200);
+//                 done();
+//             });
+//     });
+// });
+// describe('/POST Create Stylist', () => {
+//     it('Create Stylist Testing', (done) => {
+//         let stylist = {
+//             'userName': 'he81',
+//             'type': 'stylist'
+//         }
+//         chai.request('http://localhost:3000')
+//             .post('/api/stylist')
+//             .send(stylist)
+//             .end((err, res) => {
+//                 chai.expect(res.status).to.equal(200);
+//                 done();
+//             });
+//     });
+// });
 describe('/POST authenticate User', () => {
     it('Verify User Testing', (done) => {
         let user = {
@@ -96,15 +106,25 @@ describe('/GET saloon data', () => {
             });
     });
 });
-describe('/PUT User', () => {
-    it('Update stylist data Testing', (done) => {
-        let user = {
-            'email': 'chamaraliyafdfdfeg3nage604@gmail.com',
-            'password': 'da'
-        }
+// describe('/PUT User', () => {
+//     it('Update stylist data Testing', (done) => {
+//         let user = {
+//             'email': 'chamaraliyafdfdfeg3nage604@gmail.com',
+//             'password': 'da'
+//         }
+//         chai.request('http://localhost:3000')
+//             .put('/api/stylist/1')
+//             .send(user)
+//             .end((err, res) => {
+//                 chai.expect(res.status).to.equal(200);
+//                 done();
+//             });
+//     });
+// });
+describe('/GET stylist data by charges rate', () => {
+    it('GET stylist data Testing', (done) => {
         chai.request('http://localhost:3000')
-            .put('/api/stylist/1')
-            .send(user)
+            .get('/api/stylist/100')
             .end((err, res) => {
                 chai.expect(res.status).to.equal(200);
                 done();
@@ -112,3 +132,18 @@ describe('/PUT User', () => {
     });
 });
 
+// describe('/DELETE stylist data', () => {
+//     it('Delete stylist data Testing', (done) => {
+//         let user = {
+//             'email': 'chamaraliyafdfdfeg3nage604@gmail.com',
+//             'password': 'da'
+//         }
+//         chai.request('http://localhost:3000')
+//             .put('/api/stylist/1')
+//             .send(user)
+//             .end((err, res) => {
+//                 chai.expect(res.status).to.equal(200);
+//                 done();
+//             });
+//     });
+// });

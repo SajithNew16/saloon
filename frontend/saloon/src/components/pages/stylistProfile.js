@@ -59,7 +59,7 @@ class StylistProfile extends React.Component {
         }
         return (
             <div>
-                <h2>Update Your Profile</h2>
+                <h2> Your Profile</h2>
                 {items.map(item => (
                     <Form key={item.styId} onSubmit={this.handleSubmit}>
                         <div className="form-group row">
@@ -70,7 +70,11 @@ class StylistProfile extends React.Component {
                             <label className="col-5 col-md-4">Email address</label>
                             <input type="email" className="form-control col-6 col-md-4" defaultValue={item.email}></input>
                         </div>
-                        <button type="submit" className="btn btn-primary">Update</button>
+                        <div className="form-group row">
+                            <label className="col-5 col-md-4">charges Rate</label>
+                            <input type="text" className="form-control col-6 col-md-4" defaultValue={item.chargesMan}></input>
+                        </div>
+                        {/* <button type="submit" className="btn btn-primary">Update</button> */}
                     </Form>
                 ))}
             </div>

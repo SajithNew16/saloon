@@ -142,8 +142,7 @@ class ContactUsPage extends React.Component {
                     )}
                 </FormItem>
                 <FormItem {...tailFormItemLayout}>
-                    <Button type="primary" htmlType="submit">Sign Up</Button>
-                    <center>Already have an account? <a href="/loginForm">Log In</a></center>
+                    <Button type="primary" htmlType="submit">Contact Us</Button>
                 </FormItem>
                 <Form.Item {...tailFormItemLayout}>
                     <Button id="clearButton" hidden onClick={e => {

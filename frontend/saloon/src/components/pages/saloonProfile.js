@@ -45,7 +45,7 @@ class SaloonProfile extends React.Component {
             <div>
                 <h2>Your Profile</h2>
                 {items.map(item => (
-                    <Form key={item.styId} onSubmit={this.handleSubmit}>
+                    <Form key={item.salId} onSubmit={this.handleSubmit}>
                         <div className="form-group row">
                             <label className="col-5 col-md-4">User Name</label>
                             <input type="text" className="form-control col-6 col-md-4" defaultValue={item.userName}></input>

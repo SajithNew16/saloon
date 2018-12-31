@@ -27,6 +27,7 @@ const Body = () => (
             <Route exact path='/eventForm' component={EventForm} />
             <Route exact path='/stylistProf' component={StylistProfile} />
             <Route exact path='/saloonProf' component={SaloonProfile} />
+            <Route exact path='/loginFormOut' component={HomePage} />
         </Switch>
     </main>
 
