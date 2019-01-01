@@ -4,7 +4,6 @@ import { NavLink } from "react-router-dom";
 import axios from "axios";
 
 const FormItem = Form.Item;
-// var userId = 0;
 
 class StylistHomePage extends React.Component {
   constructor(props) {
@@ -29,16 +28,21 @@ class StylistHomePage extends React.Component {
   }
 
   componentDidMount() {
-    console.log("user email " + this.state.data);
     // get user id by email
-    // if (this.state.data != null) {
-    //     axios.get('http://localhost:3000/api/user/' + this.state.data)
-    //         .then(res => {
-    //             this.setState({
-    //                 userId: JSON.stringify(res.data.userId)
-    //             }, () => { console.log(this.state.userId) })
-    //         })
-    // }
+    if (this.state.data != null) {
+      axios
+        .get("http://localhost:3000/api/user/" + this.state.data)
+        .then(res => {
+          this.setState(
+            {
+              userId: JSON.stringify(res.data.userId)
+            },
+            () => {
+              console.log(this.state.userId);
+            }
+          );
+        });
+    }
 
     console.log("user id " + this.state.userId);
   }
