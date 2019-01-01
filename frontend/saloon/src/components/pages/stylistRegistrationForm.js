@@ -1,8 +1,9 @@
-import { Form, Input, Tooltip, Icon, Button, Cascader } from "antd";
+import { Form, Input, Tooltip, Icon, Button, Cascader, DatePicker } from "antd";
 import React from "react";
 import axios from "axios";
 import $ from "jquery";
 import { Link } from "react-router-dom";
+import moment from "moment";
 
 const FormItem = Form.Item;
 const experiences = [
@@ -35,8 +36,16 @@ class StylistRegistrationForm extends React.Component {
       experience: [],
       password: "",
       type: "",
-      userId: ""
+      userId: "",
+      startValue: null,
+      endValue: null,
+      endOpen: false
     };
+  }
+
+  componentDidMount() {
+    var today = moment().format("YYYY-MM-DD HH:mm:ss");
+    this.setState.startValue = today;
   }
 
   handleSubmit = e => {
@@ -82,6 +91,48 @@ class StylistRegistrationForm extends React.Component {
     });
   };
 
+  disabledStartDate = startValue => {
+    const endValue = this.state.endValue;
+    if (!startValue || !endValue) {
+      return false;
+    }
+    return startValue.valueOf() > endValue.valueOf();
+  };
+
+  disabledEndDate = endValue => {
+    const startValue = this.state.startValue;
+    var today = moment().format("YYYY-MM-DD HH:mm:ss");
+
+    if (!endValue || !startValue) {
+      return false;
+    }
+    return endValue.valueOf() <= startValue.valueOf();
+  };
+
+  onChange = (field, value) => {
+    this.setState({
+      [field]: value
+    });
+  };
+
+  onStartChange = value => {
+    this.onChange("startValue", value);
+  };
+
+  onEndChange = value => {
+    this.onChange("endValue", value);
+  };
+
+  handleStartOpenChange = open => {
+    if (!open) {
+      this.setState({ endOpen: true });
+    }
+  };
+
+  handleEndOpenChange = open => {
+    this.setState({ endOpen: open });
+  };
+
   handleClearForm = e => {
     this.props.form.resetFields();
   };
@@ -122,7 +173,7 @@ class StylistRegistrationForm extends React.Component {
 
   render() {
     const { getFieldDecorator } = this.props.form;
-
+    const { startValue, endValue, endOpen } = this.state;
     const formItemLayout = {
       labelCol: {
         xs: { span: 24 },
@@ -209,6 +260,45 @@ class StylistRegistrationForm extends React.Component {
               }
             ]
           })(<Input type="number" />)}
+        </FormItem>
+        <FormItem {...formItemLayout} label="Free Slot From">
+          {getFieldDecorator("startValue", {
+            rules: [
+              {
+                required: true,
+                message: "Please input your Starting free time"
+              }
+            ]
+          })(
+            <DatePicker
+              disabledDate={this.disabledStartDate}
+              showTime
+              format="YYYY-MM-DD HH:mm:ss"
+              placeholder="Start"
+              onChange={this.onStartChange}
+              onOpenChange={this.handleStartOpenChange}
+            />
+          )}
+        </FormItem>
+        <FormItem {...formItemLayout} label="Free Slot To">
+          {getFieldDecorator("endValue", {
+            rules: [
+              {
+                required: true,
+                message: "Please input your Ending free time"
+              }
+            ]
+          })(
+            <DatePicker
+              disabledDate={this.disabledEndDate}
+              showTime
+              format="YYYY-MM-DD HH:mm:ss"
+              placeholder="End"
+              onChange={this.onEndChange}
+              open={endOpen}
+              onOpenChange={this.handleEndOpenChange}
+            />
+          )}
         </FormItem>
         <FormItem {...formItemLayout} label="Password">
           {getFieldDecorator("password", {

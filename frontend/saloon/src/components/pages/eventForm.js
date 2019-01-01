@@ -1,18 +1,33 @@
 import { DatePicker } from "antd";
 import React from "react";
 import { Form, Input, Button } from "antd";
+import axios from "axios";
+import $ from "jquery";
+import moment from "moment";
+
 const { TextArea } = Input;
 const FormItem = Form.Item;
 
 class EventForm extends React.Component {
-  state = {
-    startValue: null,
-    endValue: null,
-    endOpen: false
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      startValue: null,
+      endValue: null,
+      endOpen: false,
+      data: this.props.location.data
+    };
+  }
+
+  componentDidMount() {
+    var today = moment().format("YYYY-MM-DD HH:mm:ss");
+    console.log("today " + today);
+  }
 
   disabledStartDate = startValue => {
     const endValue = this.state.endValue;
+    var today = moment().format("YYYY-MM-DD HH:mm:ss");
+    console.log("today " + today);
     if (!startValue || !endValue) {
       return false;
     }
@@ -21,6 +36,8 @@ class EventForm extends React.Component {
 
   disabledEndDate = endValue => {
     const startValue = this.state.startValue;
+    var today = moment().format("YYYY-MM-DD HH:mm:ss");
+
     if (!endValue || !startValue) {
       return false;
     }
@@ -55,24 +72,27 @@ class EventForm extends React.Component {
     e.preventDefault();
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
-        // axios.post('http://localhost:3000/api/stylists', values).then(response => {
-        //     console.log("Successful" + response);
-        //     if (response.data.success) {
-        //         $('#clearButton').trigger("click");
-        //         var retVal = window.confirm("Successfully registered! Do you want to continue?");
-        //         if (retVal === true) {
-        //             $('#nextPage').trigger("click");
-        //             // window.location.href = "http://localhost:3001/stylistHome";
-        //             return true;
-        //         }
-        //         else {
-        //             return false;
-        //         }
-        //     } else {
-        //         alert("Email has already existing! So you should have an account in Comcast. If you have any queries please post it on our contact us page");
-        //         console.log(response.data.error)
-        //     }
-        // })
+        axios
+          .put("http://localhost:3000/api/stylist/" + this.state.data, values)
+          .then(response => {
+            console.log("Successful" + response);
+            if (response.data === 1) {
+              $("#clearButton").trigger("click");
+              var retVal = window.confirm(
+                "Successfully registered! Do you want to continue?"
+              );
+              if (retVal === true) {
+                $("#nextPage").trigger("click");
+                // window.location.href = "http://localhost:3001/stylistHome";
+                return true;
+              } else {
+                return false;
+              }
+            } else {
+              alert("Wrong ");
+              console.log(response.data.error);
+            }
+          });
       }
     });
   };
@@ -111,7 +131,7 @@ class EventForm extends React.Component {
             rules: [
               {
                 required: true,
-                message: "Please input your Starting Date for the assigned task"
+                message: "Please input your Starting free time"
               }
             ]
           })(
@@ -130,7 +150,7 @@ class EventForm extends React.Component {
             rules: [
               {
                 required: true,
-                message: "Please input your Ending Date for the assigned task"
+                message: "Please input your Ending free time"
               }
             ]
           })(

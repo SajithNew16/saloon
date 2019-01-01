@@ -137,7 +137,11 @@ class StylistHomePage extends React.Component {
                         </Col> */}
             <Col span={8}>
               <Card title="Event Calendar" bordered={false}>
-                <NavLink to="/eventForm">Enter your new events</NavLink>
+                <NavLink
+                  to={{ pathname: "/eventForm", data: this.state.userId }}
+                >
+                  Enter your new events
+                </NavLink>
               </Card>
             </Col>
           </Row>
