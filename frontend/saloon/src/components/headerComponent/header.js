@@ -47,14 +47,14 @@ class Header extends Component {
             <ul className="navbar-nav mr-auto">
               <li className={`nav-item ${homeActive}`}>
                 <NavLink className="nav-link" to="/">
-                  <h1>Home</h1>
+                  Home
                   <span className="sr-only">(current)</span>
                 </NavLink>
               </li>
               <li className={`nav-item ${aboutUsActive}`}>
                 <NavLink className="nav-link" to="/aboutus">
                   <span>
-                    <b>About Us</b>
+                    About Us
                   </span>
                 </NavLink>
               </li>

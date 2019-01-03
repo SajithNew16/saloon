@@ -135,7 +135,7 @@ class StylistHomePage extends React.Component {
             {/* <Col span={8}>
                             <Card title="Notifications" bordered={false}>Card content</Card>
                         </Col> */}
-            <Col span={8}>
+            {/* <Col span={8}>
               <Card title="Event Calendar" bordered={false}>
                 <NavLink
                   to={{ pathname: "/eventForm", data: this.state.userId }}
@@ -143,7 +143,7 @@ class StylistHomePage extends React.Component {
                   Enter your new events
                 </NavLink>
               </Card>
-            </Col>
+            </Col> */}
           </Row>
         </div>
         {/* <div style={{ background: '#ECECEC', padding: '30px' }}>

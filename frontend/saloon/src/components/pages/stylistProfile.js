@@ -76,16 +76,28 @@ class StylistProfile extends React.Component {
             {items.map(item => (
               <Form key={item.styId} onSubmit={this.handleSubmit}>
                 <div className="form-group row">
-                  <label><b>User Name : </b> </label>
+                  <label>
+                    <b>User Name : </b>{" "}
+                  </label>
                   <label>&nbsp; {item.userName}</label>
                 </div>
                 <div className="form-group row">
-                  <label><b>Email address : </b> </label>
+                  <label>
+                    <b>Email address : </b>{" "}
+                  </label>
                   <label>&nbsp; {item.email}</label>
                 </div>
                 <div className="form-group row">
-                  <label><b>charges Rate : </b></label>
+                  <label>
+                    <b>charges Rate : </b>
+                  </label>
                   <label>&nbsp; {item.chargesMan}</label>
+                </div>
+                <div className="form-group row">
+                  <label>
+                    <b>Acceptance : </b>
+                  </label>
+                  <label>&nbsp; {item.acceptance}</label>
                 </div>
               </Form>
             ))}

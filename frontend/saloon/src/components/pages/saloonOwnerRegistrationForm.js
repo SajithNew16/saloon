@@ -107,8 +107,8 @@ class SaloonOwnerRegistrationForm extends React.Component {
         sm: { span: 8 }
       },
       wrapperCol: {
-        xs: { span: 24 },
-        sm: { span: 14 }
+        xs: { span: 16 },
+        sm: { span: 10 }
       }
     };
     const tailFormItemLayout = {
@@ -212,14 +212,14 @@ class SaloonOwnerRegistrationForm extends React.Component {
             ]
           })(<Input type="password" onBlur={this.handleConfirmBlur} />)}
         </FormItem>
-        <FormItem {...tailFormItemLayout}>
+        <Form.Item>
           <Button type="primary" htmlType="submit">
             Sign Up
           </Button>
           <center>
             Already have an account? <NavLink to="/loginForm">Log In</NavLink>
           </center>
-        </FormItem>
+        </Form.Item>
         <Form.Item {...tailFormItemLayout}>
           <Button
             id="clearButton"

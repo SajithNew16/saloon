@@ -24,8 +24,6 @@ class Homepage extends Component {
               <img
                 className="d-block w-100"
                 src="saloon2.jpg"
-                height="100%"
-                width="100%"
                 alt="First slide"
               />
             </div>
@@ -33,17 +31,13 @@ class Homepage extends Component {
               <img
                 className="d-block w-100"
                 src="saloon3.jpg"
-                height="100%"
-                width="100%"
                 alt="Second slide"
               />
             </div>
             <div className="carousel-item">
               <img
                 className="d-block w-100"
-                src="saloon1.jpg"
-                height="100%"
-                width="100%"
+                src="saloon11.jpg"
                 alt="Third slide"
               />
             </div>

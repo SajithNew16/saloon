@@ -5,7 +5,7 @@ const express = require("express");
 const bodyparser = require("body-parser");
 const cors = require("cors");
 const { Stylist, Saloon, User, Event } = require("../config/sequelize");
-
+const Op = Sequelize.Op;
 const app = express();
 app.use(cors());
 app.use(bodyparser.json());
@@ -196,6 +196,54 @@ app.delete("/api/stylistById/:styId", (req, res) => {
       stylist: stylist
     })
   );
+});
+
+//search stylist by starting free time slot
+app.get("/api/stylistByStartSlot/:startValue", (req, res) => {
+  Stylist.findAll({
+    where: {
+      startValue: {
+        [Op.gte]: req.params.startValue
+      }
+    }
+  }).then(stylist =>
+    res.json({
+      stylist: stylist
+    })
+  );
+});
+
+//search stylist by ending free time slot
+app.get("/api/stylistByEndSlot/:endValue", (req, res) => {
+  Stylist.findAll({
+    where: {
+      endValue: {
+        [Op.lte]: req.params.endValue
+      }
+    }
+  }).then(stylist =>
+    res.json({
+      stylist: stylist
+    })
+  );
+});
+
+//update stylist acceptance with request
+app.put("/api/stylistAcceptance/:userId", (req, res, err) => {
+  Stylist.update(
+    {
+      acceptance: req.body.acceptance
+    },
+    {
+      where: {
+        userId: req.params.userId
+      }
+    }
+  )
+    .then(function(rowsUpdated) {
+      res.json(rowsUpdated);
+    })
+    .catch(err);
 });
 
 // app.put("/api/stylistUpdate/:userId", (req, res) => {

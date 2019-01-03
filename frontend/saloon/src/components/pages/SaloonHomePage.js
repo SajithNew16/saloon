@@ -1,7 +1,19 @@
-import { Form, Card, Col, Row, InputNumber, Button, Input, List } from "antd";
+import {
+  Form,
+  Card,
+  Col,
+  Row,
+  InputNumber,
+  Button,
+  Input,
+  List,
+  DatePicker
+} from "antd";
 import React from "react";
 import { NavLink, Link } from "react-router-dom";
 import axios from "axios";
+import  "../../../src/formcenter.css"
+
 const Search = Input.Search;
 const FormItem = Form.Item;
 
@@ -22,7 +34,8 @@ class SaloonHomePage extends React.Component {
       userId: "",
       data: this.props.location.data,
       items: [],
-      isLoaded: false
+      isLoaded: false,
+      salId: ""
     };
   }
 
@@ -64,6 +77,19 @@ class SaloonHomePage extends React.Component {
         console.log("Received values of form: ", values);
       }
     });
+  };
+
+  sendRequest = e => {
+    e.preventDefault();
+    axios
+      .put("http://localhost:3000/api/stylistAcceptance/1")
+      .then(response => {
+        if (response.data === 1) {
+          alert("Succesfully sent the request");
+        } else {
+          alert("Unable to send the request!. Please try again");
+        }
+      });
   };
 
   handleConfirmBlur = e => {
@@ -118,10 +144,28 @@ class SaloonHomePage extends React.Component {
       });
   };
 
+  searchByStartingDate(date, dateString) {
+    console.log(dateString);
+    fetch("http://localhost:3000/api/stylistByStartSlot/" + dateString)
+      .then(res => res.json())
+      .then(json => {
+        console.log(json);
+        this.setState(
+          {
+            isLoaded: true,
+            items: json.stylist
+          },
+          () => {
+            console.log("Hi ", this.state.items[0].userName);
+          }
+        );
+      });
+  }
+
   render() {
     const { getFieldDecorator } = this.props.form;
     // const { items } = this.state;
-    const { isLoaded, items } = this.state;
+    const { isLoaded, items, salId } = this.state;
     const formItemLayout = {
       labelCol: {
         xs: { span: 24 },
@@ -147,53 +191,81 @@ class SaloonHomePage extends React.Component {
     function onChange(value) {
       console.log("changed", value);
     }
+
     return (
       <div>
-        <div style={{ background: "#ECECEC", padding: "30px" }}>
+        <div style={{ background: "#ECECEC", padding: "40px" }}>
           <h2>Welcome Saloon Owner</h2>
           <form className="form-inline">
-            <div className="form-group">
-              <Search
-                placeholder="Charging Rating"
-                enterButton
-                style={{ width: 200 }}
-                onChange={e => this.searchByName(e)}
-              />
+            <div className="formCent">
+              <div className="form-group">
+                <DatePicker
+                  disabledDate={this.disabledStartDate}
+                  showTime
+                  format="YYYY-MM-DD HH:mm:ss"
+                  placeholder="Starting Free Time"
+                  onChange={() => this.searchByStartingDate()}
+                  onOpenChange={this.handleStartOpenChange}
+                />
+                &nbsp;
+                <DatePicker
+                  disabledDate={this.disabledEndDate}
+                  showTime
+                  format="YYYY-MM-DD HH:mm:ss"
+                  placeholder="Ending Free Time"
+                  onChange={() => this.searchByStartingDate()}
+                  onOpenChange={this.handleEndOpenChange}
+                />
+                &nbsp;
+                <Search
+                  placeholder="Charging Rating"
+                  enterButton
+                  style={{ width: 200 }}
+                  onChange={e => this.searchByName(e)}
+                />
+              </div>
             </div>
           </form>
         </div>
+
         <List
           grid={{ gutter: 16, column: 4 }}
           dataSource={items}
           renderItem={item => (
-            <List.Item>
-              <Card
-                className="animated pulse"
-                id="card"
-                style={{ width: 300, height: 380 }}
-                hoverable
-              >
-                <Row>
-                  <Col>
-                    <img
-                      style={{ width: 200, height: 250 }}
-                      alt="example"
-                      src="user.jpg"
-                    />
-                  </Col>
-                  <Col>
-                    <b>
-                      {" "}
-                      <Meta title={"Name : " + item.userName} />
-                    </b>
-                    <b>
-                      {" "}
-                      <Meta title={"Email : " + item.email} />
-                    </b>
-                  </Col>
-                </Row>
-              </Card>
-            </List.Item>
+            <form onSubmit={this.sendRequest}>
+              <List.Item>
+                <Card
+                  className="animated pulse"
+                  id="card"
+                  style={{ width: 300, height: 380 }}
+                  hoverable
+                >
+                  <Row>
+                    <Col>
+                      <img
+                        style={{ width: 200, height: 250 }}
+                        alt="example"
+                        src="user.jpg"
+                      />
+                    </Col>
+                    <Col>
+                      <b>
+                        {" "}
+                        <Meta title={"Name : " + item.userName} />
+                      </b>
+                      <b>
+                        {" "}
+                        <Meta title={"Email : " + item.email} />
+                      </b>
+                    </Col>
+                    <Col>
+                      <br />
+                      <button type="submit primary">Send Request</button>
+                    </Col>
+                  </Row>
+                </Card>
+              </List.Item>
+            </form>
           )}
         />
       </div>

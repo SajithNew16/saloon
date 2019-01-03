@@ -180,18 +180,18 @@ class StylistRegistrationForm extends React.Component {
         sm: { span: 8 }
       },
       wrapperCol: {
-        xs: { span: 24 },
-        sm: { span: 14 }
+        xs: { span: 16 },
+        sm: { span: 10 }
       }
     };
     const tailFormItemLayout = {
       wrapperCol: {
         xs: {
-          span: 14,
+          span: 24,
           offset: 0
         },
         sm: {
-          span: 8,
+          span: 16,
           offset: 8
         }
       }
@@ -326,14 +326,14 @@ class StylistRegistrationForm extends React.Component {
             ]
           })(<Input type="password" onBlur={this.handleConfirmBlur} />)}
         </FormItem>
-        <FormItem {...tailFormItemLayout}>
+        <Form.Item>
           <Button type="primary" htmlType="submit">
             Sign Up
           </Button>
           <center>
             Already have an account? <Link to="/loginForm">Log In</Link>
           </center>
-        </FormItem>
+        </Form.Item>
         <Form.Item {...tailFormItemLayout}>
           <Button
             id="clearButton"
@@ -353,6 +353,12 @@ class StylistRegistrationForm extends React.Component {
         <FormItem>
           {getFieldDecorator("type", {
             initialValue: "stylist",
+            rules: [{ whitespace: true }]
+          })(<Input hidden />)}
+        </FormItem>
+        <FormItem>
+          {getFieldDecorator("acceptance", {
+            initialValue: "intial",
             rules: [{ whitespace: true }]
           })(<Input hidden />)}
         </FormItem>

@@ -30,6 +30,7 @@ module.exports = (sequelize, type) => {
       unique: true
     },
     startValue: type.DATE,
-    endValue: type.DATE
+    endValue: type.DATE,
+    acceptance: type.STRING
   });
 };

@@ -31,12 +31,21 @@
   }
 }
 
-.navbar-nav > li{
-  padding-left:30px;
-  padding-right:30px;
+.navbar-nav > li {
+  padding-left: 30px;
+  padding-right: 30px;
 }
 
 .form-group.required .control-label:after {
-  content:"*";
-  color:red;
+  content: "*";
+  color: red;
+}
+
+footer {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  overflow: hidden;
+  background: rgb(98, 123, 170);
 }
