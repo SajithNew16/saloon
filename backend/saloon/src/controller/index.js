@@ -246,6 +246,12 @@ app.put("/api/stylistAcceptance/:userId", (req, res, err) => {
     .catch(err);
 });
 
+
+// //table joining
+// app.get("api/stylistUser/:styId", (req, res) => {
+//   sequelize.query("select * from users u, stylists s where u.userId=s.userId",{type:sequelize.QueryTypes.Q})
+// });
+
 // app.put("/api/stylistUpdate/:userId", (req, res) => {
 //   sequelize
 //     .query(

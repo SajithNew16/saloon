@@ -248,58 +248,6 @@ class StylistRegistrationForm extends React.Component {
             ]
           })(<Cascader options={experiences} />)}
         </FormItem>
-        <FormItem {...formItemLayout} label="Charges Rate Per hour">
-          {getFieldDecorator("chargesMan", {
-            rules: [
-              {
-                required: true,
-                message: "Please input your Charges Rate!"
-              },
-              {
-                validator: this.validateToNextPassword
-              }
-            ]
-          })(<Input type="number" />)}
-        </FormItem>
-        <FormItem {...formItemLayout} label="Free Slot From">
-          {getFieldDecorator("startValue", {
-            rules: [
-              {
-                required: true,
-                message: "Please input your Starting free time"
-              }
-            ]
-          })(
-            <DatePicker
-              disabledDate={this.disabledStartDate}
-              showTime
-              format="YYYY-MM-DD HH:mm:ss"
-              placeholder="Start"
-              onChange={this.onStartChange}
-              onOpenChange={this.handleStartOpenChange}
-            />
-          )}
-        </FormItem>
-        <FormItem {...formItemLayout} label="Free Slot To">
-          {getFieldDecorator("endValue", {
-            rules: [
-              {
-                required: true,
-                message: "Please input your Ending free time"
-              }
-            ]
-          })(
-            <DatePicker
-              disabledDate={this.disabledEndDate}
-              showTime
-              format="YYYY-MM-DD HH:mm:ss"
-              placeholder="End"
-              onChange={this.onEndChange}
-              open={endOpen}
-              onOpenChange={this.handleEndOpenChange}
-            />
-          )}
-        </FormItem>
         <FormItem {...formItemLayout} label="Password">
           {getFieldDecorator("password", {
             rules: [

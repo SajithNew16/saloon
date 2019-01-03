@@ -25,12 +25,7 @@ module.exports = (sequelize, type) => {
         key: "userId"
       }
     },
-    email: {
-      type: type.STRING,
-      unique: true
-    },
-    startValue: type.DATE,
-    endValue: type.DATE,
-    acceptance: type.STRING
+    IsEducator: type.BOOLEAN,
+    IsStylist: type.BOOLEAN
   });
 };
