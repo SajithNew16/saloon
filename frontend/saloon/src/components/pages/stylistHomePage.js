@@ -1,14 +1,17 @@
-import { Form, Card, Col, Row, InputNumber, Button, Input } from "antd";
+import { Form, Card, Col, Row, InputNumber, Button, Input, Tabs } from "antd";
 import React from "react";
 import { NavLink } from "react-router-dom";
 import axios from "axios";
 
 const FormItem = Form.Item;
+const TabPane = Tabs.TabPane;
+const { Meta } = Card;
 
 class StylistHomePage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      items: [],
       confirmDirty: false,
       autoCompleteResult: [],
       userName: "",
@@ -28,6 +31,22 @@ class StylistHomePage extends React.Component {
   }
 
   componentDidMount() {
+    console.log("user id profile " + this.state.data);
+    if (this.state.data != null) {
+      fetch("http://localhost:3000/api/stylistUser/" + this.state.data)
+        .then(res => res.json())
+        .then(json => {
+          this.setState(
+            {
+              isLoaded: true,
+              items: json.stylist
+            },
+            () => {
+              console.log("Hi " + this.state.items);
+            }
+          );
+        });
+    }
     // get user id by email
     if (this.state.data != null) {
       axios
@@ -38,18 +57,19 @@ class StylistHomePage extends React.Component {
               userId: JSON.stringify(res.data.userId)
             },
             () => {
-              console.log(this.state.userId);
+              console.log("uid " + this.state.userId);
             }
           );
         });
     }
 
-    console.log("user id " + this.state.userId);
+    // console.log("user id " + this.state.userId);
   }
 
   handleSubmit = e => {
     e.preventDefault();
-    console.log("us ");
+
+    console.log("us " + this.state.items);
   };
 
   handleConfirmBlur = e => {
@@ -90,7 +110,11 @@ class StylistHomePage extends React.Component {
     console.log("Received values of form: ");
   };
 
+  callback(key) {
+    console.log(key);
+  }
   render() {
+    var { isLoaded, items } = this.state;
     const { getFieldDecorator } = this.props.form;
 
     const formItemLayout = {
@@ -118,90 +142,83 @@ class StylistHomePage extends React.Component {
     function onChange(value) {
       console.log("changed", value);
     }
+    if (!isLoaded) {
+      return <div>Loading...</div>;
+    }
     return (
-      <div>
-        <div style={{ background: "#ECECEC", padding: "30px" }}>
-          <h2>Welcome Stylist</h2>
-          <Row gutter={16}>
-            <Col span={8}>
-              <Card title="Your Profile" bordered={false}>
-                <NavLink
-                  to={{ pathname: "/stylistProf", data: this.state.userId }}
-                >
-                  View Your Profile
-                </NavLink>
+      <Tabs defaultActiveKey="1" onChange={() => this.callback}>
+        <TabPane tab=" Profile" key="1">
+          <div className="row">
+            <div className="col-sm">
+              <Card
+                hoverable
+                style={{ width: 240 }}
+                cover={<img alt="example" src="stylist.jpg" />}
+              >
+                <Meta
+                  title="Europe Street beat"
+                  description="www.instagram.com"
+                />
               </Card>
-            </Col>
-            {/* <Col span={8}>
-                            <Card title="Notifications" bordered={false}>Card content</Card>
-                        </Col> */}
-            {/* <Col span={8}>
-              <Card title="Event Calendar" bordered={false}>
-                <NavLink
-                  to={{ pathname: "/eventForm", data: this.state.userId }}
-                >
-                  Enter your new events
-                </NavLink>
-              </Card>
-            </Col> */}
-          </Row>
-        </div>
-        {/* <div style={{ background: '#ECECEC', padding: '30px' }}>
-                    <h3>Update Your Charges Rate {this.state.data}</h3>
-                    <Row gutter={16}>
-                        <Col span={8}>
-                        <Form onSubmit={this.handleSubmit}>
-                            <Card title="Per Man" bordered={false}>
-                            <InputNumber
-                                    defaultValue={0}
-                                    formatter={value => `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-                                    id="perMan"
-                                    parser={value => value.replace(/\$\s?|(,*)/g, '')}
-                                    onChange={onChange}
-                            />
-                            <p />
-                            <FormItem {...tailFormItemLayout}>
-                                <Button type="primary" htmlType="submit">Add</Button>
-                            </FormItem>
-                            </Card>
-                        </Form>             
-                        </Col>
-                        <Col span={8}>
-                        <Form onSubmit={this.handleSubmit}>
-                            <Card title="Per Woman" bordered={false}>
-                                <InputNumber
-                                    defaultValue={0}
-                                    formatter={value => `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-                                    parser={value => value.replace(/\$\s?|(,*)/g, '')}
-                                    onChange={onChange}
-                                />
-                                <p />
-                            <FormItem {...tailFormItemLayout}>
-                                <Button type="primary" htmlType="submit">Add</Button>
-                            </FormItem>
-                            </Card>
-                        </Form>  
-                        </Col>
-                        <Col span={8}>
-                        <Form onSubmit={this.handleSubmit}>
-                            <Card title="Per Kid" bordered={false}>
-                                <InputNumber
-                                    defaultValue={0}
-                                    formatter={value => `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-                                    parser={value => value.replace(/\$\s?|(,*)/g, '')}
-                                    onChange={onChange}
-                                />
-                                <p />
-                            <FormItem {...tailFormItemLayout}>
-                                <Button type="primary" htmlType="submit">Add</Button>
-                            </FormItem>
-                            </Card>
-                        </Form>  
-                        </Col>
-                    </Row>
-                  
-                </div> */}
-      </div>
+            </div>
+            <div className="col-sm">
+              {items.map(item => (
+                <Form key={item.styId} onSubmit={this.handleSubmit}>
+                  <div className="form-group row">
+                    <label className="col-5 col-md-4">
+                      <b>User Name :</b>
+                    </label>
+                    <input
+                      type="text"
+                      className="form-control col-6 col-md-4"
+                      defaultValue={item.userName}
+                      onSubmit={e =>
+                        this.setState({ userName: e.target.value })
+                      }
+                    />
+                  </div>
+                  <div className="form-group row">
+                    <label className="col-5 col-md-4">
+                      <b>Email address :</b>
+                    </label>
+                    <input
+                      type="email"
+                      className="form-control col-6 col-md-4"
+                      defaultValue={item.email}
+                    />
+                  </div>
+
+                  <div className="form-group row">
+                    <label className="col-5 col-md-4">
+                      <b>charges Rate :</b>
+                    </label>
+                    <input
+                      type="number"
+                      className="form-control col-6 col-md-4"
+                      defaultValue={item.chargesMan}
+                    />
+                  </div>
+                  <button type="submit" className="btn btn-primary">
+                    Update
+                  </button>
+                  {/* <div className="form-group row">
+                    <label>
+                      <b>Acceptance : </b>
+                    </label>
+                    <label>&nbsp; {item.acceptance}</label>
+                  </div> */}
+                </Form>
+              ))}
+            </div>
+          </div>
+        </TabPane>
+        <TabPane tab="Tab 2" key="2">
+          Content of Tab Pane 2
+        </TabPane>
+        <TabPane tab="Tab 3" key="3">
+          Content of Tab Pane 3
+        </TabPane>
+      </Tabs>
     );
   }
 }

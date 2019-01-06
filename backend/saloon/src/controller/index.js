@@ -1,6 +1,16 @@
 //dependecies
-const sequelize = require("../config/sequelize");
+// const sequelize = require("../config/sequelize");
 var Sequelize = require("sequelize");
+const sequelize = new Sequelize("saloon", "root", "root", {
+  host: "localhost",
+  dialect: "mysql",
+  pool: {
+    max: 10,
+    min: 0,
+    acquire: 30000,
+    idle: 10000
+  }
+});
 const express = require("express");
 const bodyparser = require("body-parser");
 const cors = require("cors");
@@ -126,7 +136,8 @@ app.put("/api/stylist/:userId", (req, res, err) => {
   Stylist.update(
     {
       userName: req.body.userName,
-      email: req.body.email
+      email: req.body.email,
+      chargesMan: req.body.chargesMan
     },
     {
       where: {
@@ -246,10 +257,48 @@ app.put("/api/stylistAcceptance/:userId", (req, res, err) => {
     .catch(err);
 });
 
+//get stylist by email through combining user and stylist
+app.get("/api/stylistUser/:email", (req, res) => {
+  sequelize
+    .query(
+      "select * from users u, stylists s where u.email=:email and u.userId=s.userId",
+      {
+        replacements: { email: req.params.email },
+        type: Sequelize.QueryTypes.SELECT
+      }
+    )
+    .then(stylist => {
+      res.json({
+        stylist: stylist
+      });
+    });
+});
 
-// //table joining
-// app.get("api/stylistUser/:styId", (req, res) => {
-//   sequelize.query("select * from users u, stylists s where u.userId=s.userId",{type:sequelize.QueryTypes.Q})
+// //table joining user and stylist
+// app.get("api/stylistUser/:email", (req, res) => {
+//   console.log("hi " + req.params.email);
+//   User.findOne({
+//     where: {
+//       email: req.params.email
+//     }
+//   }).then(user =>
+//     res.json({
+//       user: user
+//     })
+//   );
+//   // sequelize
+//   //   .query(
+//   //     "select * from users u, stylists s where u.userId=s.userId and u.email=?",
+//   //     {
+//   //       replacements: { email: req.params.email },
+//   //       type: sequelize.QueryTypes.SELECT
+//   //     }
+//   //   )
+//   //   .then(stylist => {
+//   //     res.json({
+//   //       stylist: stylist
+//   //     });
+//   //   });
 // });
 
 // app.put("/api/stylistUpdate/:userId", (req, res) => {
