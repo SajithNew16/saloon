@@ -274,7 +274,7 @@ app.get("/api/stylistUser/:email", (req, res) => {
     });
 });
 
-//get stylist by email through combining user and stylist
+//update stylist and user
 app.put("/api/stylistUserUpdate/:userId", (req, res) => {
   sequelize
     .query(
@@ -291,9 +291,16 @@ app.put("/api/stylistUserUpdate/:userId", (req, res) => {
     )
     .then(stylist => {
       res.json({
+        success: true,
         stylist: stylist
       });
-    });
+    })
+    .catch(err =>
+      res.json({
+        success: false,
+        err: err.errors
+      })
+    );
 });
 
 // //table joining user and stylist

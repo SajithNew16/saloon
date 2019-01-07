@@ -8,7 +8,8 @@ import {
   Input,
   Tabs,
   Tooltip,
-  Icon
+  Icon,
+  DatePicker
 } from "antd";
 import React from "react";
 import { NavLink } from "react-router-dom";
@@ -32,6 +33,7 @@ class StylistHomePage extends React.Component {
       password: "",
       type: "",
       userId: "",
+      startValue: null,
       chargesMan: {},
       data: this.props.location.data
     };
@@ -83,10 +85,30 @@ class StylistHomePage extends React.Component {
     e.preventDefault();
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
-        axios.put(
-          "http://localhost:3000/api/stylistUserUpdate/" + this.state.userId,
-          values
+        var retVal = window.confirm(
+          "Are you sure you want to update your user profile?"
         );
+        if (retVal === true) {
+          axios
+            .put(
+              "http://localhost:3000/api/stylistUserUpdate/" +
+                this.state.userId,
+              values
+            )
+            .then(res => {
+              if (res.data.success) {
+                alert("Successfully Updated!");
+                return true;
+              } else {
+                alert(
+                  "Email has already existing! So you should have an account in Comcast. If you have any queries please post it on our contact us page!"
+                );
+                return false;
+              }
+            });
+        } else {
+          return false;
+        }
       }
     });
   };
@@ -171,7 +193,9 @@ class StylistHomePage extends React.Component {
             <Card
               hoverable
               style={{ width: 240 }}
-              cover={<img alt="example" src="stylist.jpg" />}
+              cover={
+                <img alt="example" src={require("../../images/stylist.jpg")} />
+              }
             >
               <Meta
                 title="Europe Street beat"
@@ -241,8 +265,28 @@ class StylistHomePage extends React.Component {
             </Form>
           ))}
         </TabPane>
-        <TabPane tab="Tab 2" key="2">
-          Content of Tab Pane 2
+        <TabPane tab="Free Time Slot" key="2">
+          <Form onSubmit={this.handleFreeSlotSubmit}>
+            <FormItem {...formItemLayout} label="Free Slot From">
+              {getFieldDecorator("startValue", {
+                rules: [
+                  {
+                    required: true,
+                    message: "Please input your Starting free time"
+                  }
+                ]
+              })(
+                <DatePicker
+                  disabledDate={this.disabledStartDate}
+                  showTime
+                  format="YYYY-MM-DD HH:mm:ss"
+                  placeholder="Start"
+                  onChange={this.onStartChange}
+                  onOpenChange={this.handleStartOpenChange}
+                />
+              )}
+            </FormItem>
+          </Form>
         </TabPane>
         <TabPane tab="Tab 3" key="3">
           Content of Tab Pane 3
