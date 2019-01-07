@@ -1,7 +1,7 @@
 //dependecies
 // const sequelize = require("../config/sequelize");
 var Sequelize = require("sequelize");
-const sequelize = new Sequelize("saloon", "root", "root", {
+const sequelize = new Sequelize("saloon", "root", "", {
   host: "localhost",
   dialect: "mysql",
   pool: {
@@ -265,6 +265,28 @@ app.get("/api/stylistUser/:email", (req, res) => {
       {
         replacements: { email: req.params.email },
         type: Sequelize.QueryTypes.SELECT
+      }
+    )
+    .then(stylist => {
+      res.json({
+        stylist: stylist
+      });
+    });
+});
+
+//get stylist by email through combining user and stylist
+app.put("/api/stylistUserUpdate/:userId", (req, res) => {
+  sequelize
+    .query(
+      "UPDATE users u, stylists s SET u.email=:email, s.userName=:userName, s.chargesMan=:chargesMan where s.userId=u.userId and s.userId=:userId",
+      {
+        replacements: {
+          email: req.body.email,
+          userName: req.body.userName,
+          chargesMan: req.body.chargesMan,
+          userId: req.params.userId
+        },
+        type: Sequelize.QueryTypes.UPDATE
       }
     )
     .then(stylist => {

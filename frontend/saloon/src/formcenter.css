@@ -1,3 +1,16 @@
-.formCent{
-    margin: 0 auto
+.formCent {
+  margin: 0 auto;
+}
+
+.divCenter {
+  width: 30%;
+  margin: 0 auto;
+}
+
+.divTop {
+  top: 10px;
+  width: 60%;
+  left: 10px;
+  /* right:60%; */
+  margin: auto;
 }

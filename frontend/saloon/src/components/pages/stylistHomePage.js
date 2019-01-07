@@ -1,7 +1,19 @@
-import { Form, Card, Col, Row, InputNumber, Button, Input, Tabs } from "antd";
+import {
+  Form,
+  Card,
+  Col,
+  Row,
+  InputNumber,
+  Button,
+  Input,
+  Tabs,
+  Tooltip,
+  Icon
+} from "antd";
 import React from "react";
 import { NavLink } from "react-router-dom";
 import axios from "axios";
+import "../../../src/formcenter.css";
 
 const FormItem = Form.Item;
 const TabPane = Tabs.TabPane;
@@ -20,6 +32,7 @@ class StylistHomePage extends React.Component {
       password: "",
       type: "",
       userId: "",
+      chargesMan: {},
       data: this.props.location.data
     };
   }
@@ -68,8 +81,14 @@ class StylistHomePage extends React.Component {
 
   handleSubmit = e => {
     e.preventDefault();
-
-    console.log("us " + this.state.items);
+    this.props.form.validateFieldsAndScroll((err, values) => {
+      if (!err) {
+        axios.put(
+          "http://localhost:3000/api/stylistUserUpdate/" + this.state.userId,
+          values
+        );
+      }
+    });
   };
 
   handleConfirmBlur = e => {
@@ -119,12 +138,12 @@ class StylistHomePage extends React.Component {
 
     const formItemLayout = {
       labelCol: {
-        xs: { span: 24 },
-        sm: { span: 8 }
+        xs: { span: 20 },
+        sm: { span: 10 }
       },
       wrapperCol: {
-        xs: { span: 24 },
-        sm: { span: 16 }
+        xs: { span: 25 },
+        sm: { span: 10 }
       }
     };
     const tailFormItemLayout = {
@@ -148,69 +167,79 @@ class StylistHomePage extends React.Component {
     return (
       <Tabs defaultActiveKey="1" onChange={() => this.callback}>
         <TabPane tab=" Profile" key="1">
-          <div className="row">
-            <div className="col-sm">
-              <Card
-                hoverable
-                style={{ width: 240 }}
-                cover={<img alt="example" src="stylist.jpg" />}
-              >
-                <Meta
-                  title="Europe Street beat"
-                  description="www.instagram.com"
-                />
-              </Card>
-            </div>
-            <div className="col-sm">
-              {items.map(item => (
-                <Form key={item.styId} onSubmit={this.handleSubmit}>
-                  <div className="form-group row">
-                    <label className="col-5 col-md-4">
-                      <b>User Name :</b>
-                    </label>
-                    <input
-                      type="text"
-                      className="form-control col-6 col-md-4"
-                      defaultValue={item.userName}
-                      onSubmit={e =>
-                        this.setState({ userName: e.target.value })
-                      }
-                    />
-                  </div>
-                  <div className="form-group row">
-                    <label className="col-5 col-md-4">
-                      <b>Email address :</b>
-                    </label>
-                    <input
-                      type="email"
-                      className="form-control col-6 col-md-4"
-                      defaultValue={item.email}
-                    />
-                  </div>
-
-                  <div className="form-group row">
-                    <label className="col-5 col-md-4">
-                      <b>charges Rate :</b>
-                    </label>
-                    <input
-                      type="number"
-                      className="form-control col-6 col-md-4"
-                      defaultValue={item.chargesMan}
-                    />
-                  </div>
-                  <button type="submit" className="btn btn-primary">
-                    Update
-                  </button>
-                  {/* <div className="form-group row">
-                    <label>
-                      <b>Acceptance : </b>
-                    </label>
-                    <label>&nbsp; {item.acceptance}</label>
-                  </div> */}
-                </Form>
-              ))}
-            </div>
+          <div className="divCenter">
+            <Card
+              hoverable
+              style={{ width: 240 }}
+              cover={<img alt="example" src="stylist.jpg" />}
+            >
+              <Meta
+                title="Europe Street beat"
+                description="www.instagram.com"
+              />
+            </Card>
           </div>
+          {items.map(item => (
+            <Form key={item.styId} onSubmit={this.handleSubmit}>
+              <FormItem
+                {...formItemLayout}
+                label={
+                  <span>
+                    User Name
+                    <Tooltip title="What do you want others to call you?">
+                      <Icon type="question-circle-o" />
+                    </Tooltip>
+                  </span>
+                }
+              >
+                {getFieldDecorator("userName", {
+                  rules: [
+                    {
+                      required: true,
+                      message: "Please input your User Name!",
+                      whitespace: true
+                    }
+                  ],
+                  initialValue: item.userName
+                })(<Input />)}
+              </FormItem>
+
+              <FormItem {...formItemLayout} label="E-mail">
+                {getFieldDecorator("email", {
+                  rules: [
+                    {
+                      type: "email",
+                      message: "The input is not valid E-mail!"
+                    },
+                    {
+                      required: true,
+                      message: "Please input your E-mail!"
+                    }
+                  ],
+                  initialValue: item.email
+                })(<Input />)}
+              </FormItem>
+              <FormItem {...formItemLayout} label="charges Rate">
+                {getFieldDecorator("chargesMan", {
+                  rules: [
+                    {
+                      type: "number",
+                      min: 0,
+                      message: "The input is not valid charges rate"
+                    },
+                    {
+                      required: true,
+                      message: "Please input your Charges"
+                    }
+                  ],
+                  initialValue: item.chargesMan
+                })(<InputNumber />)}
+              </FormItem>
+              <button type="submit" className="btn btn-primary">
+                Update
+              </button>
+            </Form>
+          ))}
         </TabPane>
         <TabPane tab="Tab 2" key="2">
           Content of Tab Pane 2
