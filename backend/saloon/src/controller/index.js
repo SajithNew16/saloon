@@ -14,7 +14,13 @@ const sequelize = new Sequelize("saloon", "root", "", {
 const express = require("express");
 const bodyparser = require("body-parser");
 const cors = require("cors");
-const { Stylist, Saloon, User, Event } = require("../config/sequelize");
+const {
+  Stylist,
+  Saloon,
+  User,
+  StylistJob,
+  Event
+} = require("../config/sequelize");
 const Op = Sequelize.Op;
 const app = express();
 app.use(cors());
@@ -295,6 +301,35 @@ app.put("/api/stylistUserUpdate/:userId", (req, res) => {
         stylist: stylist
       });
     })
+    .catch(err =>
+      res.json({
+        success: false,
+        err: err.errors
+      })
+    );
+});
+
+//get stylist id by user id
+app.get("/api/stylistIdByUserId/:userId", (req, res) => {
+  Stylist.findOne({
+    where: {
+      userId: req.params.userId
+    },
+    attributes: ["styId"]
+  })
+    .then(stylist => res.json(stylist))
+    .catch(err => res.json(err));
+});
+
+//insert free time slots to sty_job table
+app.post("/api/styJob/:styId", (req, res) => {
+  StylistJob.create(req.body)
+    .then(stylistJob =>
+      res.json({
+        success: true,
+        stylistJob: stylistJob
+      })
+    )
     .catch(err =>
       res.json({
         success: false,

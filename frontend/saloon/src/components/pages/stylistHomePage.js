@@ -12,8 +12,10 @@ import {
   DatePicker
 } from "antd";
 import React from "react";
+import moment from "moment";
 import { NavLink } from "react-router-dom";
 import axios from "axios";
+import $ from "jquery";
 import "../../../src/formcenter.css";
 
 const FormItem = Form.Item;
@@ -34,7 +36,10 @@ class StylistHomePage extends React.Component {
       type: "",
       userId: "",
       startValue: null,
+      endValue: null,
+      endOpen: false,
       chargesMan: {},
+      styId: "",
       data: this.props.location.data
     };
   }
@@ -46,6 +51,9 @@ class StylistHomePage extends React.Component {
   }
 
   componentDidMount() {
+    var today = moment().format("YYYY-MM-DD HH:mm:ss");
+    this.setState.startValue = today;
+
     console.log("user id profile " + this.state.data);
     if (this.state.data != null) {
       fetch("http://localhost:3000/api/stylistUser/" + this.state.data)
@@ -77,9 +85,47 @@ class StylistHomePage extends React.Component {
           );
         });
     }
-
-    // console.log("user id " + this.state.userId);
   }
+
+  disabledStartDate = startValue => {
+    const endValue = this.state.endValue;
+    if (!startValue || !endValue) {
+      return false;
+    }
+    return startValue.valueOf() > endValue.valueOf();
+  };
+
+  disabledEndDate = endValue => {
+    const startValue = this.state.startValue;
+    if (!endValue || !startValue) {
+      return false;
+    }
+    return endValue.valueOf() <= startValue.valueOf();
+  };
+
+  onChange = (field, value) => {
+    this.setState({
+      [field]: value
+    });
+  };
+
+  onStartChange = value => {
+    this.onChange("startValue", value);
+  };
+
+  onEndChange = value => {
+    this.onChange("endValue", value);
+  };
+
+  handleStartOpenChange = open => {
+    if (!open) {
+      this.setState({ endOpen: true });
+    }
+  };
+
+  handleEndOpenChange = open => {
+    this.setState({ endOpen: open });
+  };
 
   handleSubmit = e => {
     e.preventDefault();
@@ -109,6 +155,34 @@ class StylistHomePage extends React.Component {
         } else {
           return false;
         }
+      }
+    });
+  };
+
+  handleFreeSlotSubmit = e => {
+    e.preventDefault();
+    this.props.form.validateFieldsAndScroll((err, values) => {
+      if (!err) {
+        //get styId by UserId
+        axios
+          .get(
+            "http://localhost:3000/api/stylistIdByUserId/" + this.state.userId
+          )
+          .then(res => {
+            var styId = res.data.styId;
+            values.styId = styId;
+            //insert to styJob
+            axios
+              .post("http://localhost:3000/api/styJob/:styId", values)
+              .then(res => {
+                if (res.data.success) {
+                  $("#clearButton").trigger("click");
+                  alert("Successfully added free time slots");
+                } else {
+                  console.log("fail");
+                }
+              });
+          });
       }
     });
   };
@@ -157,6 +231,7 @@ class StylistHomePage extends React.Component {
   render() {
     var { isLoaded, items } = this.state;
     const { getFieldDecorator } = this.props.form;
+    const { startValue, endValue, endOpen } = this.state;
 
     const formItemLayout = {
       labelCol: {
@@ -267,7 +342,7 @@ class StylistHomePage extends React.Component {
         </TabPane>
         <TabPane tab="Free Time Slot" key="2">
           <Form onSubmit={this.handleFreeSlotSubmit}>
-            <FormItem {...formItemLayout} label="Free Slot From">
+            <FormItem {...formItemLayout} label="Free Time Slot From">
               {getFieldDecorator("startValue", {
                 rules: [
                   {
@@ -277,7 +352,12 @@ class StylistHomePage extends React.Component {
                 ]
               })(
                 <DatePicker
-                  disabledDate={this.disabledStartDate}
+                  disabledDate={current => {
+                    return (
+                      moment().add(-1, "days") >= current &&
+                      this.disabledStartDate
+                    );
+                  }}
                   showTime
                   format="YYYY-MM-DD HH:mm:ss"
                   placeholder="Start"
@@ -286,6 +366,47 @@ class StylistHomePage extends React.Component {
                 />
               )}
             </FormItem>
+            <FormItem {...formItemLayout} label="Free Time Slot To">
+              {getFieldDecorator("endValue", {
+                rules: [
+                  {
+                    required: true,
+                    message: "Please input your Ending free time"
+                  }
+                ]
+              })(
+                <DatePicker
+                  disabledDate={this.disabledEndDate}
+                  showTime
+                  format="YYYY-MM-DD HH:mm:ss"
+                  placeholder="End"
+                  onChange={this.onEndChange}
+                  open={endOpen}
+                  onOpenChange={this.handleEndOpenChange}
+                />
+              )}
+            </FormItem>
+            <FormItem>
+              {getFieldDecorator("styId", {
+                rules: [{ whitespace: true }]
+              })(<Input hidden />)}
+            </FormItem>
+            <FormItem {...tailFormItemLayout}>
+              <Button type="primary" htmlType="submit">
+                Publish
+              </Button>
+            </FormItem>
+            <Form.Item {...tailFormItemLayout}>
+              <Button
+                id="clearButton"
+                hidden
+                onClick={e => {
+                  this.props.form.resetFields();
+                }}
+              >
+                Clear
+              </Button>
+            </Form.Item>
           </Form>
         </TabPane>
         <TabPane tab="Tab 3" key="3">
