@@ -376,7 +376,12 @@ class StylistHomePage extends React.Component {
                 ]
               })(
                 <DatePicker
-                  disabledDate={this.disabledEndDate}
+                  disabledDate={current => {
+                    return (
+                      moment().add(-1, "days") >= current ||
+                      moment().add(2, "days") <= current
+                    );
+                  }}
                   showTime
                   format="YYYY-MM-DD HH:mm:ss"
                   placeholder="End"

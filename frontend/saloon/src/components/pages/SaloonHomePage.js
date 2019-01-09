@@ -12,7 +12,8 @@ import {
 import React from "react";
 import { NavLink, Link } from "react-router-dom";
 import axios from "axios";
-import  "../../../src/formcenter.css"
+import moment from "moment";
+import "../../../src/formcenter.css";
 
 const Search = Input.Search;
 const FormItem = Form.Item;
@@ -200,7 +201,12 @@ class SaloonHomePage extends React.Component {
             <div className="formCent">
               <div className="form-group">
                 <DatePicker
-                  disabledDate={this.disabledStartDate}
+                  disabledDate={current => {
+                    return (
+                      moment().add(-1, "days") >= current ||
+                      moment().add(2, "days") <= current
+                    );
+                  }}
                   showTime
                   format="YYYY-MM-DD HH:mm:ss"
                   placeholder="Starting Free Time"
@@ -209,20 +215,31 @@ class SaloonHomePage extends React.Component {
                 />
                 &nbsp;
                 <DatePicker
-                  disabledDate={this.disabledEndDate}
+                  disabledDate={current => {
+                    return (
+                      moment().add(-1, "days") >= current ||
+                      moment().add(2, "days") <= current
+                    );
+                  }}
                   showTime
                   format="YYYY-MM-DD HH:mm:ss"
                   placeholder="Ending Free Time"
-                  onChange={() => this.searchByStartingDate()}
+                  onChange={() => this.searchBy()}
                   onOpenChange={this.handleEndOpenChange}
                 />
                 &nbsp;
-                <Search
+                <InputNumber
+                  min={0}
+                  placeholder="Maximum charging rates per hour"
+                  style={{ width: 250 }}
+                  onChange={e => this.searchByName(e)}
+                />
+                {/* <Search
                   placeholder="Charging Rating"
                   enterButton
                   style={{ width: 200 }}
                   onChange={e => this.searchByName(e)}
-                />
+                /> */}
               </div>
             </div>
           </form>

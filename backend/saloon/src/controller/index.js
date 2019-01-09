@@ -1,7 +1,7 @@
 //dependecies
 // const sequelize = require("../config/sequelize");
 var Sequelize = require("sequelize");
-const sequelize = new Sequelize("saloon", "root", "", {
+const sequelize = new Sequelize("saloon", "root", "root", {
   host: "localhost",
   dialect: "mysql",
   pool: {

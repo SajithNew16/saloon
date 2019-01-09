@@ -7,7 +7,7 @@ const WorkingModel = require("../model/working");
 const UserModel = require("../model/user");
 const EventModel = require("../model/event");
 
-const sequelize = new Sequelize("saloon", "root", "", {
+const sequelize = new Sequelize("saloon", "root", "root", {
   host: "localhost",
   dialect: "mysql",
   pool: {
